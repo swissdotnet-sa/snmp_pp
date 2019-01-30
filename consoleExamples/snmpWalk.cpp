@@ -52,9 +52,7 @@
 #define strcasecmp _stricmp
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 #define BULK_MAX 10
 

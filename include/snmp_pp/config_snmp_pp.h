@@ -31,38 +31,6 @@
 //! The maximum size of a message that can be sent or received.
 #define MAX_SNMP_PACKET 4096
 
-/*
- * some permanent parts from autoconf process
- */
-
-#if 1
-#define HAVE_LIBSSL 1
-#endif
-#if 0
-#define HAVE_LIBTOMCRYPT 1
-#endif
-#if 0
-#define HAVE_LIBDES 1
-#endif
-#if 1
-#define HAVE_PTHREAD 1
-#endif
-
-// define SNMP_PP_NAMESPACE to enclose all library names in Snmp_pp namespace
-#if 1
-#define SNMP_PP_NAMESPACE
-#else
-#undef SNMP_PP_NAMESPACE
-#endif
-
-// If you do not use SNMP++ for commercial purposes or if you
-// have licensed IDEA (read README.v3) you may define the following
-// to enable IDEA support. (note this is not defined by a rfc)
-// #define _USE_IDEA
-
-#define _USE_OPENSSL
-
-
 // define _NO_LOGGING if you do not want any logging output 
 // (increases performance drastically and minimizes memory consumption)
 #if 1
@@ -79,19 +47,6 @@
 #undef WITH_LOG_PROFILES
 #endif
 
-// define _IPX_ADDRESS and/or _MAC_ADDRESS if you want to use the
-// classess IpxAddress/IpxSockAddress and/or MacAddress
-#if 0
-#define _MAC_ADDRESS
-#else
-#undef _MAC_ADDRESS
-#endif
-#if 0
-#define _IPX_ADDRESS
-#else
-#undef _IPX_ADDRESS
-#endif
-
 // define this if you want to send out broadcasts
 #define SNMP_BROADCAST
 
@@ -103,9 +58,6 @@
 #endif
 
   typedef struct sockaddr_storage SocketAddrType;
-
-// Not fully tested!
-//#define HAVE_POLL_SYSCALL
 
 // Some older(?) compilers need a special declaration of
 // template classes
@@ -170,10 +122,6 @@ typedef long long pp_int64;
     typedef SOCKET SnmpSocket;
 #else
     typedef int SnmpSocket;
-#endif
-
-#ifdef HAVE_POLL_SYSCALL
-#include <poll.h>
 #endif
 
 #define SNMP_PP_DEFAULT_SNMP_PORT      161 // standard port # for SNMP

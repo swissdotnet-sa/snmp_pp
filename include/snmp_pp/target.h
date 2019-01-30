@@ -64,9 +64,7 @@
 #include "snmp_pp/octet.h"
 #include "snmp_pp/collect.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 //----[ enumerated types for SNMP versions ]---------------------------
@@ -650,8 +648,6 @@ class UTarget: public SnmpTarget
   OctetStr engine_id;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_TARGET_H_

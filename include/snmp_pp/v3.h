@@ -34,9 +34,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 class OctetStr;
 
@@ -264,8 +262,6 @@ template <class T> class Buffer
 #define SecurityModel_v2  SNMP_SECURITY_MODEL_V2
 #define SecurityModel_USM SNMP_SECURITY_MODEL_USM
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_IDEA_H_

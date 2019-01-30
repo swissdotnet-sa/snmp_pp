@@ -57,9 +57,7 @@ char oid_cpp_version[]="#(@) SNMP++ $Id$";
 
 #include "snmp_pp/oid.h"                  // include def for oid class
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define  SNMPBUFFSIZE 11          // size of scratch buffer
 #define  SNMPCHARSIZE 11          // an individual oid instance as a string
@@ -429,6 +427,4 @@ int Oid::get_asn1_length() const
   return length + 4;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

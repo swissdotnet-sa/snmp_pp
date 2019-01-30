@@ -77,9 +77,7 @@
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/reentrant.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define MAX_UINT32 MAXLONG
 
@@ -97,11 +95,6 @@ class CEvents: public SnmpSynchronized {
   virtual int GetNextTimeout(msec &sendTime) = 0;
 
   // set up parameters for select/poll
-#ifdef HAVE_POLL_SYSCALL
-  virtual int GetFdCount() = 0;
-  virtual bool GetFdArray(struct pollfd *readfds, int &remaining) = 0;
-  virtual int HandleEvents(const struct pollfd *readfds, const int fds) = 0;
-#else
   virtual void GetFdSets(int &maxfds, fd_set &readfds, fd_set &writefds,
 			   fd_set &exceptfds) = 0;
   // process events pending on the active file descriptors
@@ -109,7 +102,7 @@ class CEvents: public SnmpSynchronized {
 			   const fd_set &readfds,
 			   const fd_set &writefds,
 			   const fd_set &exceptfds) = 0;
-#endif
+
   // return number of outstanding messages
   virtual int GetCount() = 0;
 
@@ -138,11 +131,6 @@ class CEventList: public SnmpSynchronized {
   // find the time of the next event that will timeout
   int GetNextTimeout(msec &sendTime);
 
-#ifdef HAVE_POLL_SYSCALL
-  int GetFdCount();
-  bool GetFdArray(struct pollfd *readfds, int &remaining);
-  int HandleEvents(const struct pollfd *readfds, const int fds);
-#else
  // set up paramters for select
   void GetFdSets(int &maxfds, fd_set &readfds, fd_set &writefds,
 		 fd_set &exceptfds);
@@ -152,7 +140,6 @@ class CEventList: public SnmpSynchronized {
 		   const fd_set &readfds,
 		   const fd_set &writefds,
 		   const fd_set &exceptfds);
-#endif
 
   // return number of outstanding messages
   int GetCount() { return m_msgCount; };
@@ -189,8 +176,6 @@ class CEventList: public SnmpSynchronized {
     int m_done;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_EVENTLIST_H_

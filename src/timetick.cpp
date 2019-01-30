@@ -55,9 +55,7 @@ char timetick_cpp_version[]="#(@) SNMP++ $Id$";
 
 #include "snmp_pp/timetick.h"	       // include header file for timetick class
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #if 0
 // general assignment from any Value
@@ -131,6 +129,4 @@ const char *TimeTicks::get_printable() const
   return output_buffer;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

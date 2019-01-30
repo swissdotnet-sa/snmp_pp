@@ -34,9 +34,7 @@
 #include <taskLib.h>
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 // default log filter: logs with level less or equal filter value are logged
 // error, warning, event, info, debug:

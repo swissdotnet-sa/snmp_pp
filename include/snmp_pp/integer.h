@@ -59,9 +59,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/smival.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define INTOUTBUF 15  // largest ASCII formatted integer
 
@@ -318,8 +316,6 @@ class SnmpInt32 : public SnmpSyntax
   SNMP_PP_MUTABLE bool m_changed;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_INTEGER_H_

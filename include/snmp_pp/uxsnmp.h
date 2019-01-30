@@ -35,9 +35,7 @@
 #include "snmp_pp/oid.h"
 #include "snmp_pp/address.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define SNMP_PP_WITH_UDPADDR // Snmp class has constructor with UdpAddress
 
@@ -662,8 +660,6 @@ private:
 #endif
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif
 
 #endif // _SNMP_UXSNMP_H_

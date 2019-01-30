@@ -34,9 +34,7 @@
 
 #include "snmp_pp/usm_v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define SNMPv3_USM_MAX_KEY_LEN        64
 
@@ -588,12 +586,6 @@ public:
 class PrivDES: public Priv
 {
  public:
-#if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
-  PrivDES();
- private:
-  int cipher;
- public:
-#endif
   int encrypt(const unsigned char *key,
               const unsigned int   key_len,
               const unsigned char *buffer,
@@ -643,61 +635,6 @@ class PrivDES: public Priv
   void fix_key_len(unsigned int &key_len) const
     { key_len = (key_len >= 16 ? 16 : 0); };
 };
-
-#ifdef _USE_IDEA
-/**
- * Encryption module using IDEA.
- *
- * @see Priv
- */
-class PrivIDEA: public Priv
-{
-public:
-
-  int encrypt(const unsigned char *key,
-              const unsigned int   key_len,
-              const unsigned char *buffer,
-              const unsigned int   buffer_len,
-              unsigned char       *out_buffer,
-              unsigned int        *out_buffer_len,
-              unsigned char       *privacy_params,
-              unsigned int        *privacy_params_len,
-              const unsigned long  engine_boots,
-              const unsigned long  engine_time);
-
-  int decrypt(const unsigned char *key,
-              const unsigned int   key_len,
-              const unsigned char *buffer,
-              const unsigned int   buffer_len,
-              unsigned char       *out_buffer,
-              unsigned int        *out_buffer_len,
-              const unsigned char *privacy_params,
-              const unsigned int   privacy_params_len,
-          const unsigned long  engine_boots,
-          const unsigned long  engine_time);
-
-  int extend_short_key(const unsigned char *password,
-                       const unsigned int   password_len,
-                       const unsigned char *engine_id,
-                       const unsigned int   engine_id_len,
-                       unsigned char       *key,
-                       unsigned int        *key_len,
-                       const unsigned int   max_key_len,
-                       Auth                *auth)
-    { return SNMPv3_USM_ERROR; /* not needed for IDEA! */ };
-
-  int get_id() const { return SNMP_PRIVPROTOCOL_IDEA; };
-  const char *get_id_string() const { return "IDEA"; };
-  int get_priv_params_len() const { return 8; };
-  int get_min_key_len() const { return 16; };
-  void fix_key_len(unsigned int &key_len) const
-    { key_len = (key_len >= 16 ? 16 : 0); };
-};
-
-#endif
-
-
-#if defined(_USE_LIBTOMCRYPT) || defined(_USE_OPENSSL)
 
 /**
  * Encryption module using AES.
@@ -752,9 +689,6 @@ public:
   int aes_type;
   int key_bytes;
   int rounds;
-#if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
-  int cipher;
-#endif
   bool need_byteswap;
 };
 
@@ -789,73 +723,6 @@ public:
 private:
   int own_aes_type;
 };
-
-#endif // _USE_LIBTOMCRYPT or _USE_OPENSSL
-
-#ifdef _USE_3DES_EDE
-/**
- * Encryption module using TripleDES-EDE KEY
- *
- *
- * @see Priv
- */
-#define TRIPLEDES_EDE_KEY_LEN 32
-
-
-class Priv3DES_EDE: public Priv
-{
-public:
-#if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
-  Priv3DES_EDE();
- private:
-  int cipher;
- public:
-#endif
-
-  int encrypt(const unsigned char *key,
-              const unsigned int   key_len,
-              const unsigned char *buffer,
-              const unsigned int   buffer_len,
-              unsigned char       *out_buffer,
-              unsigned int        *out_buffer_len,
-              unsigned char       *privacy_params,
-              unsigned int        *privacy_params_len,
-              const unsigned long  engine_boots,
-              const unsigned long  engine_time);
-
-  int decrypt(const unsigned char *key,
-              const unsigned int   key_len,
-              const unsigned char *buffer,
-              const unsigned int   buffer_len,
-              unsigned char       *out_buffer,
-              unsigned int        *out_buffer_len,
-              const unsigned char *privacy_params,
-              const unsigned int   privacy_params_len,
-          const unsigned long  engine_boots,
-          const unsigned long  engine_time);
-
-  int extend_short_key(const unsigned char *password,
-                       const unsigned int   password_len,
-                       const unsigned char *engine_id,
-                       const unsigned int   engine_id_len,
-                       unsigned char       *key,
-                       unsigned int        *key_len,
-                       const unsigned int   max_key_len,
-                       Auth                *auth);
-
-  int get_id() const { return SNMP_PRIVPROTOCOL_3DESEDE; };
-  const char *get_id_string() const { return "3DESEDE"; };
-  int get_priv_params_len() const { return 8; };
-  int get_min_key_len() const { return TRIPLEDES_EDE_KEY_LEN; };
-  void fix_key_len(unsigned int &key_len) const
-    { key_len = (key_len >= TRIPLEDES_EDE_KEY_LEN
-                                              ? TRIPLEDES_EDE_KEY_LEN : 0); };
-#ifdef _TEST
-  bool test();
-#endif
-};
-
-#endif // _USE_3DES_EDE
 
 /**
  * Base class for SHA authentication modules.
@@ -935,8 +802,6 @@ protected:
 
   Hasher *get_hasher() const;
 };
-
-#if defined(_USE_OPENSSL)
 
 /**
  * Authentication module using SHA2 (usmHMAC128SHA224AuthProtocol).
@@ -1028,10 +893,6 @@ protected:
   Hasher *get_hasher() const;
 };
 
-#endif // defined(_USE_OPENSSL)
-
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif
 
 #endif // _SNMP_AUTH_PRIV_H_

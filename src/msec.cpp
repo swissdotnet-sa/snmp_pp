@@ -55,9 +55,7 @@ char msec_cpp_version[]="@(#) SNMP++ $Id$";
 #endif
 
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 int operator==(const msec &t1, const msec &t2)
 {
@@ -237,6 +235,4 @@ const char *msec::get_printable() const
   return m_output_buffer;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

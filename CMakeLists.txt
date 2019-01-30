@@ -20,9 +20,7 @@ add_library(snmp++
     src/eventlist.cpp
     src/eventlistholder.cpp
     src/gauge.cpp
-    src/idea.cpp
     src/integer.cpp
-    src/IPv6Utility.cpp
     src/log.cpp
     src/md5c.cpp
     src/mp_v3.cpp

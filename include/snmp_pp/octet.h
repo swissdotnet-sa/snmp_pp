@@ -59,9 +59,7 @@
 
 #include "snmp_pp/smival.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //------------[ SNMP++ OCTETSTR CLASS DEF  ]-----------------------------
 class OctetStr: public  SnmpSyntax
@@ -453,8 +451,6 @@ class OpaqueStr: public OctetStr
 
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_OCTET_H_

@@ -60,15 +60,12 @@ char snmp_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/usm_v3.h"
 #include "snmp_pp/vb.h"
 #include "snmp_pp/log.h"
-#include "snmp_pp/IPv6Utility.h"
 
 #ifndef WIN32
 #include <fcntl.h>
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.uxsnmp";
 
@@ -1914,34 +1911,19 @@ int Snmp::engine_id_discovery(OctetStr &engine_id,
 
   end_time += timeout_sec * 1000;
 
-#ifdef HAVE_POLL_SYSCALL
-  struct pollfd readfds;
-  int timeout;
-#else
   fd_set readfds;
-#endif
 
   do
   {
     bool something_to_receive = false;
     end_time.GetDeltaFromNow(fd_timeout);
 
-#ifdef HAVE_POLL_SYSCALL
-    memset(&readfds, 0, sizeof(struct pollfd));
-    readfds.fd = sock;
-    readfds.events = POLLIN;
-    timeout = fd_timeout.tv_sec * 1000 + fd_timeout.tv_usec / 1000;
-    nfound = poll(&readfds, 1, timeout);
-    if ((nfound > 0) && (readfds.revents & POLLIN))
-	something_to_receive = true;
-#else
     FD_ZERO(&readfds);
     FD_SET(sock, &readfds);
 
     nfound = select((int)(sock + 1), &readfds, NULL, NULL, &fd_timeout);
     if ((nfound > 0) && (FD_ISSET(sock, &readfds)))
 	something_to_receive = true;
-#endif
 
     if (something_to_receive)
     {
@@ -2072,34 +2054,19 @@ int Snmp::broadcast_discovery(UdpAddressCollection &addresses,
 
   end_time += timeout_sec * 1000;
 
-#ifdef HAVE_POLL_SYSCALL
-  struct pollfd readfds;
-  int timeout;
-#else
   fd_set readfds;
-#endif
 
   do
   {
     bool something_to_receive = false;
     end_time.GetDeltaFromNow(fd_timeout);
 
-#ifdef HAVE_POLL_SYSCALL
-    memset(&readfds, 0, sizeof(struct pollfd));
-    readfds.fd = sock;
-    readfds.events = POLLIN;
-    timeout = fd_timeout.tv_sec * 1000 + fd_timeout.tv_usec / 1000;
-    nfound = poll(&readfds, 1, timeout);
-    if ((nfound > 0) && (readfds.revents & POLLIN))
-	something_to_receive = true;
-#else
     FD_ZERO(&readfds);
     FD_SET(sock, &readfds);
 
     nfound = select((int)(sock + 1), &readfds, NULL, NULL, &fd_timeout);
     if ((nfound > 0) && (FD_ISSET(sock, &readfds)))
 	something_to_receive = true;
-#endif
 
     if (something_to_receive)
     {
@@ -2236,6 +2203,4 @@ void* Snmp::process_thread(void *arg)
     return 0;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif

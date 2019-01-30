@@ -70,9 +70,7 @@
 #include "snmp_pp/integer.h"             // integer class
 #include "snmp_pp/snmperrs.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 //------------[ VB Class Def ]-------------------------------------
@@ -434,8 +432,6 @@ class Vb
   void free_vb();
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_VB_H_

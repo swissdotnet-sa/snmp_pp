@@ -56,9 +56,7 @@
 
 #include "snmp_pp/oid.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 /** SMI trap oid def */
@@ -109,8 +107,6 @@ class egpNeighborLossOid: public snmpTrapsOid {
   egpNeighborLossOid() { *this+=".6"; };
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_OID_DEF_H_

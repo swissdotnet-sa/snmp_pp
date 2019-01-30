@@ -79,9 +79,7 @@
 #include "snmp_pp/uxsnmp.h"
 #include "snmp_pp/eventlist.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 //----[ CSNMPMessage class ]-------------------------------------------
@@ -157,11 +155,7 @@ class CSNMPMessageQueue: public CEvents
     CSNMPMessage *GetNextTimeoutEntry();
   // find the next timeout
     int GetNextTimeout(msec &sendTime);
-#ifdef HAVE_POLL_SYSCALL
-    int GetFdCount();
-    bool GetFdArray(struct pollfd *readfds, int &remaining);
-    int HandleEvents(const struct pollfd *readfds, const int fds);
-#else
+
   // set up parameters for select
     void GetFdSets(int &maxfds, fd_set &readfds, fd_set &writefds,
 		  fd_set &exceptfds);
@@ -169,7 +163,6 @@ class CSNMPMessageQueue: public CEvents
 		     const fd_set &readfds,
 		     const fd_set &writefds,
 		     const fd_set &exceptfds);
-#endif
 
   // return number of outstanding messages
     int GetCount() { return m_msgCount; };
@@ -211,8 +204,6 @@ class CSNMPMessageQueue: public CEvents
     Snmp *m_snmpSession;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_MSGQUEUE_H_

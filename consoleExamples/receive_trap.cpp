@@ -32,9 +32,7 @@ char receivetrap_cpp_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/collect.h"
 #include "snmp_pp/notifyqueue.h"
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 void callback(int reason, Snmp *snmp, Pdu &pdu, SnmpTarget &target, void *cd)
 {

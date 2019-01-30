@@ -59,9 +59,7 @@ char snmpmsg_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/vb.h"
 #include "snmp_pp/usm_v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.snmpmsg";
 
@@ -803,6 +801,4 @@ int SnmpMessage::unload(Pdu &pdu,                 // Pdu object
   return SNMP_CLASS_SUCCESS;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

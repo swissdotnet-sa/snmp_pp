@@ -77,9 +77,7 @@ char notifyqueue_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/pdu.h"
 #include "snmp_pp/log.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.notifyqueue";
 
@@ -573,81 +571,6 @@ void CNotifyEventQueue::DeleteEntry(Snmp *snmp)
   unlock();
 }
 
-#ifdef HAVE_POLL_SYSCALL
-int CNotifyEventQueue::GetFdCount()
-{
-  SnmpSynchronize _synchronize(*this); // instead of REENTRANT()
-  if (m_notify_fd == INVALID_SOCKET)
-    return 0;
-  return 1;
-}
-
-bool CNotifyEventQueue::GetFdArray(struct pollfd *readfds,
-                                   int &remaining)
-{
-  SnmpSynchronize _synchronize(*this); // instead of REENTRANT()
-
-  if (m_notify_fd != INVALID_SOCKET)
-  {
-    if (remaining == 0)
-      return false;
-    readfds[0].fd = m_notify_fd;
-    readfds[0].events = POLLIN;
-    remaining--;
-  }
-  return true;
-}
-
-int CNotifyEventQueue::HandleEvents(const struct pollfd *readfds,
-                                    const int fds)
-{
-  SnmpSynchronize _synchronize(*this); // instead of REENTRANT()
-
-  int status = SNMP_CLASS_SUCCESS;
-
-  if (m_notify_fd == INVALID_SOCKET)
-    return status;
-
-  for (int i=0; i < fds; i++)
-  {
-    Pdu pdu;
-    SnmpTarget *target = NULL;
-
-    if ((readfds[i].revents & POLLIN) == 0)
-      continue; // nothing to receive
-
-    if (readfds[i].fd != m_notify_fd)
-      continue; // not our socket
-
-    status = receive_snmp_notification(m_notify_fd, *m_snmpSession,
-                                       pdu, &target);
-
-    if ((SNMP_CLASS_SUCCESS == status) ||
-        (SNMP_CLASS_TL_FAILED == status))
-    {
-      // If we have transport layer failure, the app will want to
-      // know about it.
-      // Go through each snmp object and check the filters, making
-      // callbacks as necessary
-      if (!target) target = new SnmpTarget();
-
-      CNotifyEventQueueElt *notifyEltPtr = m_head.GetNext();
-      while (notifyEltPtr)
-      {
-        notifyEltPtr->GetNotifyEvent()->Callback(*target, pdu,
-                                                 m_notify_fd, status);
-        notifyEltPtr = notifyEltPtr->GetNext();
-      } // for each snmp object
-    }
-    if (target) // receive_snmp_notification calls new
-      delete target;
-  }
-
-  return status;
-}
-
-#else
-
 void CNotifyEventQueue::GetFdSets(int &maxfds, fd_set &readfds,
                                   fd_set &/*writefds*/,
                                   fd_set &/*exceptfds*/)
@@ -707,8 +630,4 @@ int CNotifyEventQueue::HandleEvents(const int /*maxfds*/,
   return status;
 }
 
-#endif // HAVE_POLL_SYSCALL
-
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif

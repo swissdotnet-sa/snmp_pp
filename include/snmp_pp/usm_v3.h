@@ -36,9 +36,7 @@
 #include "snmp_pp/octet.h"
 #include "snmp_pp/address.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #ifndef MAXUINT32
 #define MAXUINT32 4294967295u
@@ -1117,8 +1115,6 @@ private:
 #define SNMPv3_usmAES192PrivProtocol SNMP_PRIVPROTOCOL_AES192
 #define SNMPv3_usmAES256PrivProtocol SNMP_PRIVPROTOCOL_AES256
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif
 
 #endif // _SNMP_USM_V3_H_

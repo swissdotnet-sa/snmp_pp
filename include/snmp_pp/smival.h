@@ -62,9 +62,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/smi.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 //----[ macros ]-------------------------------------------------------
@@ -175,8 +173,6 @@ protected:
   SmiVALUE smival;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif  // _SNMP_SMIVAL_H_

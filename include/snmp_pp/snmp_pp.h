@@ -51,9 +51,6 @@
 #ifndef _SNMP_PP_H_
 #define _SNMP_PP_H_
 
-// this is snmp++v3
-#define SNMP_PP_V3
-
 #include <libsnmp.h>
 
 //-----[ snmp++ classes ]------------------------------------------------

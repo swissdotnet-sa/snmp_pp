@@ -33,9 +33,7 @@ char v3_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/v3.h"
 #include "snmp_pp/octet.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.v3";
 
@@ -419,6 +417,4 @@ int saveBootCounter(const char *fileName,
   return SNMPv3_FILEOPEN_ERROR;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

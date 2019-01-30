@@ -53,9 +53,7 @@
 #define strcasecmp _stricmp
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 #ifdef _THREADS
 static pthread_attr_t* attr = 0;

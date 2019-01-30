@@ -39,9 +39,7 @@
 #include "snmp_pp/pdu.h"
 #include "snmp_pp/log.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.usm_v3";
 
@@ -4505,6 +4503,4 @@ const UsmUserTableEntry *USMUserTable::peek_next(
   return (e + 1);
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif

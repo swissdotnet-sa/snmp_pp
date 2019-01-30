@@ -56,9 +56,7 @@ char asn1_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/snmperrs.h"
 #include "snmp_pp/log.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.asn1";
 
@@ -1998,6 +1996,4 @@ unsigned char *asn1_build_scoped_pdu(
   return outBufPtr;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

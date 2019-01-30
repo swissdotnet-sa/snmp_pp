@@ -52,9 +52,7 @@ char snmptraps_cpp_version[]="@(#) SNMP++ $Id$";
 #define strcasecmp _stricmp
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 #define COLDSTART "1.3.6.1.6.3.1.1.5.1"
 #define PAYLOADID "1.3.6.1.4.1.11.2.16.2"

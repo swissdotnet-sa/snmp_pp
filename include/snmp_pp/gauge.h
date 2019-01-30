@@ -57,9 +57,7 @@
 
 #include "snmp_pp/integer.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //------------[ Gauge32 Class ]------------------------------------------
 /**
@@ -143,8 +141,6 @@ class Gauge32: public SnmpUInt32
   }
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_GAUGE_H_

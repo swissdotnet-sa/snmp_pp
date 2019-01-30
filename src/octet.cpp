@@ -57,9 +57,7 @@ char octet_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/octet.h"    // include definition for octet class
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 enum OctetStr::OutputType OctetStr::hex_output_type
                                                = OctetStr::OutputHexAndClear;
@@ -812,6 +810,4 @@ bool OctetStr::set_len(const unsigned long new_len)
   return true;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif

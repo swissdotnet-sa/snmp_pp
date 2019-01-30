@@ -58,9 +58,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //-------[ Positive SNMP ++ Error Return Codes ]------------------------------
 /** @name Pdu error codes
@@ -264,8 +262,6 @@ static const char * nErrs[] =
 //@}
 #endif //_INCLUDE_SNMP_ERR_STRINGS
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_SNMPERRS_H_

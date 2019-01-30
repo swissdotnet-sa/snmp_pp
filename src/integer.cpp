@@ -55,9 +55,7 @@ char integer_cpp_version[]="#(@) SNMP++ $Id$";
 
 #include "snmp_pp/integer.h"   // header file for gauge class
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 // general assignment from any Value
 SnmpSyntax& SnmpUInt32::operator=(const SnmpSyntax &in_val)
@@ -179,6 +177,4 @@ int SnmpInt32::get_asn1_length() const
   return 6;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

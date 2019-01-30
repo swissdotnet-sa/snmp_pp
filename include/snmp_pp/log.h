@@ -39,9 +39,7 @@
 #include <string.h>
 
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 // Log entry class
 #define ERROR_LOG	0x10
@@ -610,8 +608,6 @@ protected:
 	static const char defaultName;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 }
-#endif
 
 #endif // _SNMP_LOG_H_

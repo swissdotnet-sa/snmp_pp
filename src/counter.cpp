@@ -55,9 +55,7 @@ char counter_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/counter.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #if 0
 // general assignment from any Value
@@ -85,6 +83,4 @@ SnmpSyntax& Counter32::operator=(const SnmpSyntax &in_val)
 }
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

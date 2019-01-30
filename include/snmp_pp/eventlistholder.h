@@ -35,9 +35,7 @@
 #include "snmp_pp/eventlist.h"
 #include "snmp_pp/reentrant.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 class CSNMPMessageQueue;
 class CNotifyEventQueue;
@@ -56,10 +54,6 @@ class EventListHolder
 
   unsigned long SNMPGetNextTimeout();
 
-#ifdef HAVE_POLL_SYSCALL
-  int GetFdCount();
-  bool GetFdArray(struct pollfd *readfds, int &remaining);
-#endif
   void SNMPGetFdSets(int &  maxfds,
 		     fd_set & readfds,
 		     fd_set & writefds,
@@ -108,8 +102,6 @@ class EventListHolder
   SnmpSynchronized      pevents_mutex;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_EVENTLISTHOLDER_H_

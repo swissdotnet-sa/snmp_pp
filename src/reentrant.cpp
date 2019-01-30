@@ -30,9 +30,7 @@ char reentrant_cpp_version[]="#(@) SNMP++ $Id$";
 
 #include "snmp_pp/reentrant.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 SnmpSynchronized::SnmpSynchronized()
 {
@@ -87,7 +85,5 @@ void SnmpSynchronized::unlock()
 #endif
 }	
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 

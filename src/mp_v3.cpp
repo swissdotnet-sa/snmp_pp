@@ -41,9 +41,7 @@ char mp_v3_cpp_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/vb.h"
 #include "snmp_pp/log.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 static const char *loggerModuleName = "snmp++.mp_v3";
 
@@ -1537,6 +1535,4 @@ int v3MP::snmp_build(struct snmp_pdu *pdu,
   }
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif

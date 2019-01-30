@@ -56,9 +56,7 @@
 #include "snmp_pp/smi.h"
 #include "snmp_pp/reentrant.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //----[ defines ]------------------------------------------------------
 #define MSECOUTBUF 20
@@ -166,8 +164,6 @@ private:
 
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_MSEC_H_

@@ -64,9 +64,7 @@
 #include "snmp_pp/asn1.h"
 #include "snmp_pp/mp_v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 void freeSmivalDescriptor( SmiVALUE* );
 int convertVbToSmival( const Vb&, SmiVALUE* );
@@ -158,8 +156,6 @@ protected:
 	bool valid_flag;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif  // _SNMP_SNMPMSG_H_

@@ -61,9 +61,7 @@
 # define UINT32_MAX (4294967295U)
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define CTR64OUTBUF 30  //!< maximum ascii string for a 64-bit counter
 
@@ -253,8 +251,6 @@ class Counter64: public  SnmpSyntax
   SNMP_PP_MUTABLE bool m_changed;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_CTR64_H_

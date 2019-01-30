@@ -55,9 +55,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define WINFAR
 #define STRCAT strcat
@@ -193,8 +191,6 @@ typedef struct {
         SmiUINT32 lopart;} SmiCNTR64,   WINFAR *SmiLPCNTR64;
 //@}
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_SMI_H_

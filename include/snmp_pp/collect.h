@@ -58,9 +58,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define MAXT 25     // elements per block
 
@@ -379,9 +377,7 @@ template <class T> class SnmpCollection
   cBlock data;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif  // _SNMP_COLLECT_H_
 

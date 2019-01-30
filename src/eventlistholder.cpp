@@ -36,9 +36,7 @@ char event_list_holder_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/mp_v3.h"
 #include "snmp_pp/v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 EventListHolder::EventListHolder(Snmp *snmp_session)
 {
@@ -83,110 +81,6 @@ int EventListHolder::SNMPBlockForResponse(const unsigned long req_id,
 }
 
 //---------[ Process Pending Events ]-------------------------------
-#ifdef HAVE_POLL_SYSCALL
-// Pull all available events out of their sockets - do not block
-int EventListHolder::SNMPProcessPendingEvents()
-{
-  int fdcount;
-  int remaining;
-  struct pollfd *pollfds = 0;
-  int nfound = 0;
-  int timeout;
-  msec now(0, 0);
-  int status;
-
-  pevents_mutex.lock();
-
-  timeout = 1;  // chosen a very small timeout
-  // in order to avoid busy looping but keep overall performance
-
-  do
-  {
-    do
-    {
-      fdcount = m_eventList.GetFdCount();
-      if (pollfds) delete [] pollfds;
-      pollfds = new struct pollfd[fdcount + 1];
-      memset(pollfds, 0, (fdcount + 1) * sizeof(struct pollfd));
-      remaining = fdcount + 1;
-    } while (m_eventList.GetFdArray(pollfds, remaining) == false);
-
-    nfound = poll(pollfds, fdcount, timeout);
-
-    now.refresh();
-
-    if (nfound > 0)
-    {
-      status = m_eventList.HandleEvents(pollfds, fdcount);
-      // TM should we do anything with bad status?
-    }
-#ifdef WIN32
-    /* On Win32 select immediately returns -1 if all fd_sets are empty */
-    if (maxfds == 0)
-      Sleep(1); /* prevent 100% CPU utilization */
-#endif
-  } while (nfound > 0);
-
-  // go through the message queue and resend any messages
-  // which are past the timeout.
-  status = m_eventList.DoRetries(now);
-
-  pevents_mutex.unlock();
-
-  if (pollfds) delete [] pollfds;
-
-  return status;
-}
-
-// Block until an event shows up - then handle the event(s)
-int EventListHolder::SNMPProcessEvents(const int max_block_milliseconds)
-{
-  int fdcount;
-  int remaining;
-  struct pollfd *pollfds = 0;
-  struct timeval fd_timeout;
-  int timeout;
-  msec now; // automatcally calls msec::refresh()
-  msec sendTime;
-  int status = 0;
-
-  m_eventList.GetNextTimeout(sendTime);
-  now.GetDelta(sendTime, fd_timeout);
-
-  do
-  {
-    fdcount = m_eventList.GetFdCount();
-    if (pollfds) delete [] pollfds;
-    pollfds = new struct pollfd[fdcount + 1];
-    memset(pollfds, 0, (fdcount + 1) * sizeof(struct pollfd));
-    remaining = fdcount + 1;
-  } while (m_eventList.GetFdArray(pollfds, remaining) == false);
-
-  if ((max_block_milliseconds > 0) &&
-      ((fd_timeout.tv_sec > max_block_milliseconds / 1000) ||
-       ((fd_timeout.tv_sec == max_block_milliseconds / 1000) &&
-	(fd_timeout.tv_usec > (max_block_milliseconds % 1000) * 1000))))
-  {
-    fd_timeout.tv_sec = max_block_milliseconds / 1000;
-    fd_timeout.tv_usec = (max_block_milliseconds % 1000) * 1000;
-  }
-
-  /* Prevent endless sleep in case no fd is open */
-  if ((fdcount == 0) && (fd_timeout.tv_sec > 5))
-    fd_timeout.tv_sec = 5; /* sleep at max 5.99 seconds */
-
-  timeout = fd_timeout.tv_sec * 1000 + fd_timeout.tv_usec / 1000;
-
-  poll(pollfds, fdcount, timeout);
-
-  status = SNMPProcessPendingEvents();
-
-  if (pollfds) delete [] pollfds;
-
-  return status;
-}
-
-#else
 
 int EventListHolder::SNMPProcessPendingEvents()
 {
@@ -274,8 +168,6 @@ int EventListHolder::SNMPProcessEvents(const int max_block_milliseconds)
   return status;
 }
 
-#endif
-
 //---------[ Main Loop ]------------------------------------------
 // Infinite loop which blocks when there is nothing to do and handles
 // any events as they occur.
@@ -293,20 +185,6 @@ void EventListHolder::SNMPExitMainLoop()
    m_eventList.SetDone();
 }
 
-#ifdef HAVE_POLL_SYSCALL
-
-int EventListHolder::GetFdCount()
-{
-  return m_eventList.GetFdCount();
-}
-
-bool EventListHolder::GetFdArray(struct pollfd *readfds, int &remaining)
-{
-    return m_eventList.GetFdArray(readfds, remaining);
-}
-
-#else
-
 void EventListHolder::SNMPGetFdSets(int    &maxfds,
 				    fd_set &readfds,
 				    fd_set &writefds,
@@ -314,8 +192,6 @@ void EventListHolder::SNMPGetFdSets(int    &maxfds,
 {
   m_eventList.GetFdSets(maxfds, readfds, writefds, exceptfds);
 }
-
-#endif // HAVE_POLL_SYSCALL
 
 unsigned long EventListHolder::SNMPGetNextTimeout()
 {
@@ -362,6 +238,4 @@ unsigned long EventListHolder::SNMPGetNextTimeout()
   }
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

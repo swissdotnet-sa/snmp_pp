@@ -31,43 +31,4 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#if !defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
-
-// $Id$
-/****************************************************************
- * SHS.h  -  Secure Hash Standard (draft) FIPS 180-1            *
- *                                                              *
- * Copyright (C) 1994  Uri Blumenthal, uri@watson.ibm.com       *
- * Copyright (C) 1994  IBM T. J. Watson esearch Center          *
- *                                                              *
- * Feel free to use this code, as long as you acknowledge the   *
- * ownership by U. Blumenthal and IBM Corp. and agree to hold   *
- * both harmless in case of ANY problem you may have with this  *
- * code.                                                        *
- ****************************************************************/
-#ifdef SNMP_PP_NAMESPACE
-namespace Snmp_pp {
-#endif
-
-typedef struct {
-  /* Message Digest words */
-  unsigned long int h[5];
-  /* Message length in bits */
-  unsigned long int count[2];
-  /* Current byte position in not-full-yet buf */
-  int index;
-  /* Buffer for the remainder of bytes mod 64 */
-  unsigned char X[64];
-} SHA_CTX;
-
-int SHAInit(SHA_CTX *ctx);
-int SHAUpdate(SHA_CTX *ctx, const unsigned char *buf, unsigned int lenBuf);
-int SHAFinal(unsigned char *digest, SHA_CTX *ctx);
-
-#ifdef SNMP_PP_NAMESPACE
-} // end of namespace Snmp_pp
-#endif 
-
-#endif // !defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
-
 #endif // _SNMP_SHA_H_

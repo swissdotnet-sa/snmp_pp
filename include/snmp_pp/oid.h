@@ -62,9 +62,7 @@
 #include "snmp_pp/smival.h"
 #include "snmp_pp/collect.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 /**
  * The Object Identifier Class.
@@ -640,8 +638,6 @@ inline void Oid::delete_oid_ptr()
   m_changed = true;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_OID_H_

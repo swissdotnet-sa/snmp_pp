@@ -61,9 +61,7 @@ char counter64_cpp_version[]="@(#) SNMP++ $Id$";
 #include <inttypes.h>
 
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //----------[ return ASCII format ]-------------------------
 const char *Counter64::get_printable() const
@@ -144,6 +142,4 @@ int Counter64::get_asn1_length() const
   return 11;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

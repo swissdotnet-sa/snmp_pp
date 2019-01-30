@@ -59,9 +59,7 @@
 #include <libsnmp.h>
 #include "snmp_pp/integer.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define TICKOUTBUF 30 // max formatted time string
 
@@ -156,8 +154,6 @@ class TimeTicks : public SnmpUInt32
   SNMP_PP_MUTABLE char output_buffer[TICKOUTBUF];  // for storing printed form
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_TIMETICK_H_

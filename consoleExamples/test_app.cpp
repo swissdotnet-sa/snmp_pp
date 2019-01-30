@@ -33,9 +33,7 @@ char test_app_cpp_version[]="@(#) SNMP++ $Id$";
 #define strcasecmp _stricmp
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 // default request oids
 #define NUM_SYS_VBS	6

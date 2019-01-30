@@ -43,9 +43,7 @@
 #endif
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 class SnmpSynchronized {
 
@@ -78,8 +76,6 @@ class SnmpSynchronize {
 
 #define REENTRANT(x) { SnmpSynchronize _synchronize(*this); x }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_REENTRANT_H_

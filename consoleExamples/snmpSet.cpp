@@ -53,9 +53,7 @@ char snmpset_cpp_version[]="@(#) SNMP++ $Id$";
 #define strcasecmp _stricmp
 #endif
 
-#ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
-#endif
 
 // determine the smi type and get a value from the user
 bool determine_vb(SmiUINT32 val, Vb &vb)

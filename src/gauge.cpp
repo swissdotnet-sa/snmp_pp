@@ -55,10 +55,6 @@ char gauge_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/gauge.h"	  // header file for gauge class
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

@@ -33,9 +33,7 @@
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/target.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #ifndef EIGHTBIT_SUBIDS
 typedef unsigned long oid;
@@ -436,8 +434,6 @@ unsigned char *asn1_build_scoped_pdu(
                unsigned char *data, long dataLength);
 
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif  // _SNMP_ASN1_H_

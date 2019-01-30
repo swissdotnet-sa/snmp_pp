@@ -36,9 +36,7 @@
 #include "snmp_pp/reentrant.h"
 #include "snmp_pp/target.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 class Pdu;
 class OctetStr;
@@ -657,8 +655,6 @@ class v3MP
   unsigned int snmpUnknownPDUHandlers;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_MP_V3_H_

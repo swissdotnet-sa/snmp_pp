@@ -57,9 +57,7 @@ char vb_cpp_version[]="#(@) SNMP++ $Id$";
 
 #include "snmp_pp/vb.h"            // include vb class defs
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define IP_ADDR_SIZE  4
 #define IPX_ADDR_SIZE 10
@@ -382,6 +380,4 @@ int Vb::get_asn1_length() const
   return iv_vb_oid.get_asn1_length() + 2 + 4;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

@@ -61,9 +61,7 @@ char pdu_cpp_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/vb.h"
 #include "snmp_pp/v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define PDU_INITIAL_SIZE 25
 
@@ -580,6 +578,4 @@ bool Pdu::match_type(const int request, const int response)
   }
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

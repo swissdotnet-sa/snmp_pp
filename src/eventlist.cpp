@@ -69,9 +69,7 @@ char event_list_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/notifyqueue.h"	// queue for holding trap callbacks
 #include "snmp_pp/snmperrs.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 //----[ CSNMPMessageQueueElt class ]--------------------------------------
 
@@ -137,59 +135,6 @@ int CEventList::GetNextTimeout(msec &sendTime) REENTRANT ({
  return 0;
 })
 
-#ifdef HAVE_POLL_SYSCALL
-
-int CEventList::GetFdCount()
-{
-  SnmpSynchronize _synchronize(*this); // instead of REENTRANT()
-  int count = 0;
-  CEventListElt *msgEltPtr = m_head.GetNext();
-
-  while (msgEltPtr)
-  {
-    count += msgEltPtr->GetEvents()->GetFdCount();
-    msgEltPtr = msgEltPtr->GetNext();
-  }
-  return count;
-}
-
-bool CEventList::GetFdArray(struct pollfd *readfds, int &remaining)
-{
-  SnmpSynchronize _synchronize(*this); // instead of REENTRANT()
-  CEventListElt *msgEltPtr = m_head.GetNext();
-
-  while (msgEltPtr)
-  {
-      int old_remaining = remaining;
-      if (msgEltPtr->GetEvents()->GetFdArray(readfds, remaining) == false)
-	  return false;
-      readfds += (old_remaining - remaining);
-      msgEltPtr = msgEltPtr->GetNext();
-  }
-  return true;
-}
-
-int CEventList::HandleEvents(const struct pollfd *readfds, const int fds)
-{
-  lock();
-  CEventListElt *msgEltPtr = m_head.GetNext();
-  int status = SNMP_CLASS_SUCCESS;
-  while (msgEltPtr)
-  {
-    if (msgEltPtr->GetEvents()->GetCount())
-    {
-      unlock();
-      status = msgEltPtr->GetEvents()->HandleEvents(readfds, fds);
-      lock();
-    }
-    msgEltPtr = msgEltPtr->GetNext();
-  }
-  unlock();
-  return status;
-}
-
-#else
-
 void CEventList::GetFdSets(int &maxfds, fd_set &readfds, fd_set &writefds,
 			   fd_set &exceptfds) REENTRANT ({
 
@@ -228,8 +173,6 @@ int CEventList::HandleEvents(const int maxfds,
   return status;
 }
 
-#endif // HAVE_POLL_SYSCALL
-
 int CEventList::DoRetries(const msec &sendtime) REENTRANT ({
 
   CEventListElt *msgEltPtr = m_head.GetNext();
@@ -264,6 +207,4 @@ int CEventList::Done() REENTRANT ({
   return status;
 })
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

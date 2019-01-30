@@ -54,9 +54,7 @@ char target_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/target.h"
 #include "snmp_pp/v3.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 #define PUBLIC "public"
 
@@ -369,6 +367,4 @@ void UTarget::clear()
   ttype = type_utarget;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 

@@ -64,9 +64,7 @@
 #include "snmp_pp/octet.h"
 #include "snmp_pp/oid.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 class Vb;
 
@@ -514,8 +512,6 @@ class Pdu
   OctetStr context_engine_id;
 };
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
 
 #endif // _SNMP_PDU_H_

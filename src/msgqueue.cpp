@@ -61,9 +61,7 @@ char msgqueue_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/log.h"
 #include "snmp_pp/vb.h"
 
-#ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
 
 
 static const char *loggerModuleName = "snmp++.msgqueue";
@@ -679,6 +677,4 @@ int CSNMPMessageQueue::Done(unsigned long id)
   return 0;
 }
 
-#ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif
