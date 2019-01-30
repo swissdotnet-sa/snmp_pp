@@ -86,17 +86,11 @@ void debughexcprintf(int db_level, const char* comment,
 
 #else
 
-#ifndef _MSC_VER
 #if defined(__GNUC__) && !defined(__STRICT_ANSI__)
 #define debugprintf(db_level,format...)
 #else
 void debugprintf(int db_level, const char *format, ...);
 #endif
-#else
-// disable any warning for wrong number of arguments in macro
-#pragma warning(disable:4002)
-#define debugprintf(db_level,format)
-#endif //_MSC_VER
 
 #define debughexprintf( db_level,          data, len)
 #define debughexcprintf(db_level, comment, data, len)

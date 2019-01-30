@@ -34,13 +34,7 @@
 #include "snmp_pp/smi.h"
 
 #ifdef _THREADS
-#ifdef WIN32
-#include <process.h>
-#elif defined (CPU) && CPU == PPC603
-#include <semLib.h> 
-#else
 #include <pthread.h>
-#endif
 #endif
 
 namespace Snmp_pp {
@@ -51,13 +45,7 @@ class SnmpSynchronized {
   SnmpSynchronized();
   virtual ~SnmpSynchronized();
 #ifdef _THREADS
-#ifdef WIN32
-  CRITICAL_SECTION      _mutex;
-#elif defined (CPU) && CPU == PPC603
-  SEM_ID            	_mutex;
-#else
   pthread_mutex_t      	_mutex;
-#endif
 #endif
   void lock();
   void unlock();

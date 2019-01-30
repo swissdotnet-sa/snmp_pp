@@ -65,14 +65,9 @@
 #include <libsnmp.h>
 #include <limits.h>
 #include <sys/types.h>
-#ifdef WIN32
-#include <time.h>
-#else
-#if !(defined CPU && CPU == PPC603)
+
 #include <sys/time.h>  // time stuff and fd_set
-#endif
 #include <float.h>
-#endif
 
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/reentrant.h"

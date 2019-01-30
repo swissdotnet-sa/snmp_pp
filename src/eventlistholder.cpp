@@ -114,11 +114,6 @@ int EventListHolder::SNMPProcessPendingEvents()
       status = m_eventList.HandleEvents(maxfds, readfds, writefds, exceptfds);
       // TM should we do anything with bad status?
     }
-#ifdef WIN32
-    /* On Win32 select immediately returns -1 if all fd_sets are empty */
-    if (maxfds == 0)
-      Sleep(1); /* prevent 100% CPU utilization */
-#endif
   } while (nfound > 0);
 
   // go through the message queue and resend any messages

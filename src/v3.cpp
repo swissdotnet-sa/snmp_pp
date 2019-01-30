@@ -132,13 +132,6 @@ void debugprintf(int db_level, const char *format, ...)
     delete [] buf;
 }
 
-#else
-#if (defined (__STRICT_ANSI__) || !defined (__GNUC__)) && !defined (_MSC_VER)
-void debugprintf(int, const char*, ...)
-{
-}
-#endif
-
 #endif
 
 unsigned char *v3strcpy(const unsigned char *src, const int srclen)
@@ -384,9 +377,7 @@ int saveBootCounter(const char *fileName,
     }
     fclose(file_in);
     fclose(file_out);
-#ifdef WIN32
-    _unlink(fileName);
-#endif
+
     if (rename(tmpFileName, fileName))
     {
       LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);

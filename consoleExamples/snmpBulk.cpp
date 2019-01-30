@@ -48,10 +48,6 @@ char snmpbulk_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/snmp_pp.h"
 
-#ifdef WIN32
-#define strcasecmp _stricmp
-#endif
-
 using namespace Snmp_pp;
 
 static void

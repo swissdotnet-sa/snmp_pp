@@ -563,11 +563,7 @@ protected:
    *          0 - if succesful,
    *          1 - in the case of error
    */
-#ifdef WIN32
-  static int process_thread(Snmp *pSnmp);
-#else
   static void* process_thread(void *arg);
-#endif
 
  protected:
 
@@ -650,13 +646,7 @@ private:
 
   // Keep track of the thread.
 #ifdef _THREADS
-#ifdef WIN32
-  HANDLE m_hThread;
-#elif defined (CPU) && CPU == PPC603
-  int m_hThread;
-#else
   pthread_t m_hThread;
-#endif
 #endif
 };
 

@@ -3558,18 +3558,12 @@ int USMUserNameTable::save_to_file(const char *name, AuthPriv *ap)
     LOG("USMUserNameTable: Failed to write table entries.");
     LOG_END;
 
-#ifdef WIN32
-    _unlink(tmp_file_name);
-#else
     unlink(tmp_file_name);
-#endif
     return SNMPv3_USM_FILEWRITE_ERROR;
   }
-#ifdef WIN32
-  _unlink(name);
-#else
+
   unlink(name);
-#endif
+
   if (rename(tmp_file_name, name))
   {
     LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -4326,18 +4320,13 @@ int USMUserTable::save_to_file(const char *name, AuthPriv *ap)
     LOG("USMUserTable: Failed to write table entries.");
     LOG_END;
 
-#ifdef WIN32
-    _unlink(tmp_file_name);
-#else
     unlink(tmp_file_name);
-#endif
+
     return SNMPv3_USM_FILEWRITE_ERROR;
   }
-#ifdef WIN32
-  _unlink(name);
-#else
+
   unlink(name);
-#endif
+
   if (rename(tmp_file_name, name))
   {
     LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);

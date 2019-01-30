@@ -48,10 +48,6 @@ char snmptraps_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/snmp_pp.h"
 
-#ifdef WIN32
-#define strcasecmp _stricmp
-#endif
-
 using namespace Snmp_pp;
 
 #define COLDSTART "1.3.6.1.6.3.1.1.5.1"

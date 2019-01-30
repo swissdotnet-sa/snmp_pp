@@ -47,13 +47,6 @@ char msec_cpp_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/smival.h"
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef WIN32
-#ifdef __BCPLUSPLUS__
-#define _timeb timeb
-#define _ftime ftime
-#endif
-#endif
-
 
 namespace Snmp_pp {
 

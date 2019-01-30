@@ -35,7 +35,6 @@
 =====================================================================*/
 char snmp_cpp_version[]="#(@) SNMP++ $Id$";
 
-/* CK Ng    added support for WIN32 in the whole file */
 
 #define _INCLUDE_SNMP_ERR_STRINGS
 
@@ -61,9 +60,7 @@ char snmp_cpp_version[]="#(@) SNMP++ $Id$";
 #include "snmp_pp/vb.h"
 #include "snmp_pp/log.h"
 
-#ifndef WIN32
 #include <fcntl.h>
-#endif
 
 namespace Snmp_pp {
 
@@ -73,23 +70,13 @@ static const char *loggerModuleName = "snmp++.uxsnmp";
 extern "C"
 {
   //------------[ if using Wind-U, then bring in the ms-windows header ]
-#ifndef WIN32
   typedef short WORD;
   typedef long DWORD;
-#endif
 }
 
 //-----[ macros ]------------------------------------------------------
 #define DEFAULT_TIMEOUT 1000  // one second default timeout
 #define DEFAULT_RETRIES 1     // no retry default
-
-#ifdef WIN32
-#ifdef __BCPLUSPLUS__
-#define _timeb timeb
-#define _ftime ftime
-#endif
-#define close closesocket
-#endif
 
 //--------[ globals ]---------------------------------------------------
 
@@ -168,9 +155,6 @@ void v3CallBack(int reason, Snmp *snmp, Pdu &pdu, SnmpTarget &target, void *v3cd
 
 bool setCloseOnExecFlag(SnmpSocket fd)
 {
-#ifdef WIN32
-    return true; // Not implemented for WIN32
-#else
     // set FD_CLOEXEC to prevent inheriting the file
     // descriptor of the socket to the child processes
     int flags = fcntl(fd, F_GETFD, 0);
@@ -195,7 +179,6 @@ bool setCloseOnExecFlag(SnmpSocket fd)
         return false;
     }
     return true;
-#endif
 }
 
 //--------[ make the pdu request id ]-----------------------------------
@@ -663,29 +646,18 @@ Snmp::Snmp( int &status,  const UdpAddress& addr_v4,
 
 void Snmp::socket_startup()
 {
-#ifdef WIN32
-  WSADATA WSAData;
-  (void)WSAStartup(0x0101, &WSAData);
-#endif
+
 }
 
 void Snmp::socket_cleanup()
 {
-#ifdef WIN32
-  int iRetValue = WSACleanup();
-  debugprintf(4, "WSACleanup: ReturnValue (%i)", iRetValue);
-#endif
+
 }
 
 void Snmp::init(int& status, IpAddress *addresses[2],
                 const unsigned short port_v4,
                 const unsigned short port_v6)
 {
-#ifdef _THREADS
-#ifdef WIN32
-  m_hThread = INVALID_HANDLE_VALUE;
-#endif
-#endif
 
   eventListHolder = new EventListHolder(this);
   // initialize the request_id
@@ -738,22 +710,6 @@ void Snmp::init(int& status, IpAddress *addresses[2],
       if (bind(iv_snmp_session, (struct sockaddr*)&mgr_addr,
                sizeof(mgr_addr)) < 0)
       {
-#ifdef WIN32
-        int werr = WSAGetLastError();
-	debugprintf(1, "Call to bind throws error %d", werr);
-        if (WSAEADDRINUSE  == werr)
-          status = SNMP_CLASS_TL_IN_USE;
-        else if (WSAENOBUFS == werr)
-          status = SNMP_CLASS_RESOURCE_UNAVAIL;
-        else if (werr == WSAEAFNOSUPPORT)
-          status = SNMP_CLASS_TL_UNSUPPORTED;
-        else if (werr == WSAENETUNREACH)
-          status = SNMP_CLASS_TL_FAILED;
-        else if (werr == EACCES)
-          status = SNMP_CLASS_TL_ACCESS_DENIED;
-        else
-          status = SNMP_CLASS_INTERNAL_ERROR;
-#else
         if (EADDRINUSE  == errno)
           status = SNMP_CLASS_TL_IN_USE;
         else if (ENOBUFS == errno)
@@ -770,7 +726,6 @@ void Snmp::init(int& status, IpAddress *addresses[2],
 		      errno);
           status = SNMP_CLASS_INTERNAL_ERROR;
 	}
-#endif
 	close(iv_snmp_session);    // close the dynamic socket
 	iv_snmp_session = INVALID_SOCKET;
       }
@@ -845,21 +800,6 @@ void Snmp::init(int& status, IpAddress *addresses[2],
       if (bind(iv_snmp_session_ipv6, (struct sockaddr*) &mgr_addr,
                sizeof(mgr_addr)) < 0)
       {
-#ifdef WIN32
-        int werr = WSAGetLastError();
-        if (WSAEADDRINUSE  == werr)
-          status = SNMP_CLASS_TL_IN_USE;
-        else if (WSAENOBUFS == werr)
-          status = SNMP_CLASS_RESOURCE_UNAVAIL;
-        else if (werr == WSAEAFNOSUPPORT)
-          status = SNMP_CLASS_TL_UNSUPPORTED;
-        else if (werr == WSAENETUNREACH)
-          status = SNMP_CLASS_TL_FAILED;
-        else if (werr == EACCES)
-          status = SNMP_CLASS_TL_ACCESS_DENIED;
-        else
-          status = SNMP_CLASS_INTERNAL_ERROR;
-#else
         if (EADDRINUSE  == errno)
           status = SNMP_CLASS_TL_IN_USE;
         else if (ENOBUFS == errno)
@@ -872,7 +812,6 @@ void Snmp::init(int& status, IpAddress *addresses[2],
           status = SNMP_CLASS_TL_ACCESS_DENIED;
         else
           status = SNMP_CLASS_INTERNAL_ERROR;
-#endif
 	close(iv_snmp_session_ipv6);    // close the dynamic socket
 	iv_snmp_session_ipv6 = INVALID_SOCKET;
       }
@@ -2111,26 +2050,7 @@ bool Snmp::start_poll_thread(const int timeout)
     m_bThreadRunning = true;
 
     // start the ProcessThread function....
-#ifdef WIN32
-    DWORD id;
-    m_hThread = CreateThread(NULL, 0,
-		       (LPTHREAD_START_ROUTINE)&Snmp::process_thread,
-		       this, 0, &id);
-    if (m_hThread == NULL)
-    {
-        debugprintf(0, "Could not create ProcessThread");
-	m_bThreadRunning = false;
-	m_hThread = INVALID_HANDLE_VALUE;
-    }
-#elif defined (CPU) && CPU == PPC603
-	m_hThread = taskSpawn("Snmp::process_thread",  0, 0, 10000, (int (*)(...))Snmp::process_thread,  (int)this, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    if (m_hThread == ERROR)
-    {
-	// Could not create thread.
-        debugprintf(0, "Could not create ProcessThread");
-	m_bThreadRunning = false;
-    }
-#else
+
     int rc = pthread_create(&m_hThread, NULL, Snmp::process_thread,
 			    (void*) this);
     if (rc)
@@ -2139,7 +2059,6 @@ bool Snmp::start_poll_thread(const int timeout)
         debugprintf(0, "Could not create ProcessThread");
 	m_bThreadRunning = false;
     }
-#endif
 #endif
     return m_bThreadRunning;
 }
@@ -2158,30 +2077,14 @@ void Snmp::stop_poll_thread()
     m_bThreadRunning = false;
 
     // Wait for the working thread to stop....
-#ifdef WIN32
-    if (m_hThread != INVALID_HANDLE_VALUE)
-    {
-        ::WaitForSingleObject(m_hThread, INFINITE);
-        CloseHandle(m_hThread);
-        m_hThread = INVALID_HANDLE_VALUE;
-    }
-#elif defined (CPU) && CPU == PPC603
-    while (taskIdVerify(m_hThread) == OK)
-	taskDelay(10);
-#else
     pthread_join(m_hThread, NULL);
-#endif
 #endif
 }
 
-#ifdef WIN32
-int Snmp::process_thread(Snmp *pSnmp)
-{
-#else
+
 void* Snmp::process_thread(void *arg)
 {
     Snmp* pSnmp = (Snmp*) arg;
-#endif // !WIN32
 
     // Loop as long as we haven't stopped
     while (pSnmp->is_running())
@@ -2191,14 +2094,7 @@ void* Snmp::process_thread(void *arg)
     }
 
 #ifdef _THREADS
-#ifdef WIN32
-#else
-#if defined (CPU) && CPU == PPC603
-	exit(0);
-#else
     pthread_exit(0);
-#endif
-#endif
 #endif
     return 0;
 }

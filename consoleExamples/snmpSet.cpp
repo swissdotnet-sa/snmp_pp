@@ -49,10 +49,6 @@ char snmpset_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/snmp_pp.h"
 
-#ifdef WIN32
-#define strcasecmp _stricmp
-#endif
-
 using namespace Snmp_pp;
 
 // determine the smi type and get a value from the user

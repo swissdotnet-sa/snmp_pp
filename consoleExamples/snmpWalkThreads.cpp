@@ -49,17 +49,10 @@
 #include "snmp_pp/snmp_pp.h"
 #include "snmp_pp/reentrant.h"
 
-#ifdef WIN32
-#define strcasecmp _stricmp
-#endif
-
 using namespace Snmp_pp;
 
 #ifdef _THREADS
 static pthread_attr_t* attr = 0;
-#ifdef _WIN32THREADS
-#error "This example is not available on WIN32 platforms!"
-#endif
 #endif
 
 UdpAddress address[1000];

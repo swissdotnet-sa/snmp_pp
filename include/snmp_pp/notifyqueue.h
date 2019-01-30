@@ -64,11 +64,7 @@
 //----[ includes ]-----------------------------------------------------
 #include <libsnmp.h>
 #include <sys/types.h>
-#ifndef WIN32
-#if !(defined CPU && CPU == PPC603)
 #include <sys/time.h>	// time stuff and fd_set
-#endif
-#endif
 
 //----[ snmp++ includes ]----------------------------------------------
 

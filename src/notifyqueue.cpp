@@ -85,9 +85,6 @@ static const char *loggerModuleName = "snmp++.notifyqueue";
 extern int receive_snmp_notification(SnmpSocket sock, Snmp &snmp_session,
                                      Pdu &pdu, SnmpTarget **target);
 
-#ifdef WIN32
-#define close closesocket
-#endif
 
 //----[ CNotifyEvent class ]------------------------------------------------
 
@@ -345,22 +342,12 @@ int CNotifyEventQueue::AddEntry(Snmp *snmp,
       // open a socket to be used for the session
       if ((m_notify_fd = socket(AF_INET, SOCK_DGRAM,0)) < 0)
       {
-#ifdef WIN32
-        int werr = WSAGetLastError();
-        if (EMFILE == werr ||WSAENOBUFS == werr || ENFILE == werr)
-          status = SNMP_CLASS_RESOURCE_UNAVAIL;
-        else if (WSAEHOSTDOWN == werr)
-          status = SNMP_CLASS_TL_FAILED;
-        else
-          status = SNMP_CLASS_TL_UNSUPPORTED;
-#else
         if (EMFILE == errno || ENOBUFS == errno || ENFILE == errno)
           status = SNMP_CLASS_RESOURCE_UNAVAIL;
         else if (EHOSTDOWN == errno)
           status = SNMP_CLASS_TL_FAILED;
         else
           status = SNMP_CLASS_TL_UNSUPPORTED;
-#endif
         cleanup();
         return status;
       }
@@ -381,21 +368,6 @@ int CNotifyEventQueue::AddEntry(Snmp *snmp,
       if (bind(m_notify_fd, (struct sockaddr *) &mgr_addr,
                sizeof(mgr_addr)) < 0)
       {
-#ifdef WIN32
-        int werr = WSAGetLastError();
-        if (WSAEADDRINUSE  == werr)
-          status = SNMP_CLASS_TL_IN_USE;
-        else if (WSAENOBUFS == werr)
-          status = SNMP_CLASS_RESOURCE_UNAVAIL;
-        else if (werr == WSAEAFNOSUPPORT)
-          status = SNMP_CLASS_TL_UNSUPPORTED;
-        else if (werr == WSAENETUNREACH)
-          status = SNMP_CLASS_TL_FAILED;
-        else if (werr == EACCES)
-          status = SNMP_CLASS_TL_ACCESS_DENIED;
-        else
-          status = SNMP_CLASS_INTERNAL_ERROR;
-#else
         if (EADDRINUSE  == errno)
           status = SNMP_CLASS_TL_IN_USE;
         else if (ENOBUFS == errno)
@@ -412,7 +384,6 @@ int CNotifyEventQueue::AddEntry(Snmp *snmp,
                       errno);
           status = SNMP_CLASS_INTERNAL_ERROR;
         }
-#endif
         debugprintf(0, "Fatal: could not bind to %s",
                     m_notify_addr.get_printable());
         cleanup();

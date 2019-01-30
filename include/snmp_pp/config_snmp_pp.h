@@ -51,78 +51,16 @@
 #define SNMP_BROADCAST
 
 // Some socket types
-#if !(defined (CPU) && CPU == PPC603) && (defined __GNUC__ || defined __FreeBSD__ || defined _AIX) && ! defined __MINGW32__
-  typedef socklen_t SocketLengthType;
-#else
-  typedef int SocketLengthType;
-#endif
+typedef socklen_t SocketLengthType;
 
-  typedef struct sockaddr_storage SocketAddrType;
-
-// Some older(?) compilers need a special declaration of
-// template classes
-// #define _OLD_TEMPLATE_COLLECTION
-
-// can we use the reentrant version of these functions or
-// are the standard functions thread safe
-#ifdef __CYGWIN32__
-#define HAVE_REENTRANT_LOCALTIME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#elif __MINGW32__
-//FIXME: snmp++/src/address.cpp:865: error: `inet_ntop' was not declared in this scope
-//FIXME: snmp++/src/address.cpp:988: error: `inet_pton' was not declared in this scope
-//FIXME: snmp++/src/notifyqueue.cpp:538: error: `inet_pton' was not declared in this scope
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#define HAVE_REENTRANT_LOCALTIME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#elif __DECCXX
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#elif __HP_aCC
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#elif _MSC_VER
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#define HAVE_REENTRANT_LOCALTIME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#elif _AIX
-#define HAVE_REENTRANT_GETHOSTBYNAME
-#define HAVE_REENTRANT_GETHOSTBYADDR
-#endif
+typedef struct sockaddr_storage SocketAddrType;
 
 // Define a unsigned 64 bit integer:
-#ifdef WIN32
-#include <windows.h>
-#if defined(HAVE_WINSOCK2_H)
-#include <winsock2.h>
-#elif defined(HAVE_WINSOCK_H)
-#include <winsock.h>
-#endif
-#ifdef HAVE_WSTCPIP_H
-#include <ws2tcpip.h>
-#endif
-#ifdef HAVE_WSPIAPI_H
-#include <wspiapi.h>
-#endif
-#ifdef __BCPLUSPLUS__
-typedef unsigned __int64 pp_uint64;
-typedef __int64 pp_int64;
-#else
-typedef ULONGLONG pp_uint64;
-typedef LONGLONG pp_int64;
-#endif
-#else // not WIN32
 typedef unsigned long long pp_uint64;
 typedef long long pp_int64;
-#endif
 
 // Define a type used for sockets
-#ifdef _MSC_VER
-    typedef SOCKET SnmpSocket;
-#else
     typedef int SnmpSocket;
-#endif
 
 #define SNMP_PP_DEFAULT_SNMP_PORT      161 // standard port # for SNMP
 #define SNMP_PP_DEFAULT_SNMP_TRAP_PORT 162 // standard port # for SNMP traps
@@ -154,9 +92,7 @@ typedef long long pp_int64;
 
 
 #ifdef _THREADS
-#ifndef _WIN32THREADS
 #include <pthread.h>
-#endif
 #endif
 
 

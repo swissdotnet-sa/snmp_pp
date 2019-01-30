@@ -32,9 +32,7 @@
 #include <snmp_pp/config_snmp_pp.h>
 #include <snmp_pp/reentrant.h>
 
-#ifndef WIN32
 #include <sys/types.h>
-#endif
 #include <stdio.h>
 #include <string.h>
 

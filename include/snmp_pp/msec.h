@@ -47,11 +47,6 @@
 //----[ includes ]-----------------------------------------------------
 #include <libsnmp.h>
 
-#ifdef WIN32
-#elif defined (CPU) && CPU == PPC603
-#include <sys/times.h>
-#endif
-
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/smi.h"
 #include "snmp_pp/reentrant.h"
