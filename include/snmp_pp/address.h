@@ -64,22 +64,11 @@
 #include "snmp_pp/reentrant.h"
 #include "snmp_pp/octet.h"  // for OctetStr
 
-#ifdef __unix
-#if !defined(_AIX)
 #include <unistd.h>
-#endif
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#if defined _AIX
-#include <strings.h> // This is needed for FD_SET, bzero
-#endif
-
-#if !defined __CYGWIN32__ && !defined __hpux && !defined linux && !defined _AIX
-extern int h_errno;  // defined in WinSock header, but not for UX?!
-#endif
-#endif // __unix
 
 namespace Snmp_pp {
 
