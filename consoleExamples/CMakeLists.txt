@@ -1,8 +1,6 @@
 project(snmp++)
 cmake_minimum_required(VERSION 2.8)
 
-message(STATUS "**** consoleExambles CMakeLists.txt")
-
 add_executable(snmpGet snmpGet.cpp)
 target_link_libraries(snmpGet
     PUBLIC
