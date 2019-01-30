@@ -1,0 +1,77 @@
+cmake_minimum_required(VERSION 3.12)
+project(snmp++ VERSION 3.3.11)
+
+add_library(snmp++
+    src/address.cpp
+    src/asn1.cpp
+    src/auth_priv.cpp
+    src/counter.cpp
+    src/ctr64.cpp
+    src/eventlist.cpp
+    src/eventlistholder.cpp
+    src/gauge.cpp
+    src/idea.cpp
+    src/integer.cpp
+    src/IPv6Utility.cpp
+    src/log.cpp
+    src/md5c.cpp
+    src/mp_v3.cpp
+    src/msec.cpp
+    src/msgqueue.cpp
+    src/notifyqueue.cpp
+    src/octet.cpp
+    src/oid.cpp
+    src/pdu.cpp
+    src/reentrant.cpp
+    src/sha.cpp
+    src/snmpmsg.cpp
+    src/target.cpp
+    src/timetick.cpp
+    src/usm_v3.cpp
+    src/uxsnmp.cpp
+    src/v3.cpp
+    src/vb.cpp
+)
+add_library(snmp++::snmp++ ALIAS snmp++)
+
+find_package(Threads)
+find_package(OpenSSL)
+
+target_link_libraries(snmp++
+    PUBLIC
+        ${OPENSSL_SSL_LIBRARY}
+        ${OPENSSL_CRYPTO_LIBRARY}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_include_directories(snmp++
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    snmp++ConfigVersion.cmake
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY AnyNewerVersion
+    )
+
+install(TARGETS snmp++
+        EXPORT snmp++Targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+)
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h*")
+
+install(EXPORT snmp++Targets
+        FILE snmp++Config.cmake
+        NAMESPACE snmp++::
+        DESTINATION lib/cmake/snmp++
+)
+
+add_subdirectory(consoleExamples)
