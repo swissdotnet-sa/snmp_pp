@@ -151,7 +151,7 @@ class TimeTicks : public SnmpUInt32
   }
 
  protected:
-  SNMP_PP_MUTABLE char output_buffer[TICKOUTBUF];  // for storing printed form
+  char output_buffer[TICKOUTBUF];  // for storing printed form
 };
 
 } // end of namespace Snmp_pp

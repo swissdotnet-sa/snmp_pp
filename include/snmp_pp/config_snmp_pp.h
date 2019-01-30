@@ -60,7 +60,7 @@ typedef unsigned long long pp_uint64;
 typedef long long pp_int64;
 
 // Define a type used for sockets
-    typedef int SnmpSocket;
+typedef int SnmpSocket;
 
 #define SNMP_PP_DEFAULT_SNMP_PORT      161 // standard port # for SNMP
 #define SNMP_PP_DEFAULT_SNMP_TRAP_PORT 162 // standard port # for SNMP traps
@@ -69,11 +69,6 @@ typedef long long pp_int64;
 // Changes below this line should not be necessary
 ///////////////////////////////////////////////////////////////////////
 
-
-// Make use of mutable keyword
-//#define SNMP_PP_MUTABLE mutable
-#define SNMP_PP_MUTABLE
-
 #define SAFE_INT_CAST(expr)  ((int)(expr))
 #define SAFE_UINT_CAST(expr) ((unsigned int)(expr))
 
@@ -81,19 +76,7 @@ typedef long long pp_int64;
 #define SAFE_LONG_CAST(expr)  ((long)(expr))
 #define SAFE_ULONG_CAST(expr) ((unsigned long)(expr))
 
-
-#ifndef _THREADS
-#define _THREADS
-#endif
-
-#ifndef POSIX_THREADS
-#define POSIX_THREADS
-#endif
-
-
-#ifdef _THREADS
 #include <pthread.h>
-#endif
 
 
 #endif // _CONFIG_SNMP_PP_H_

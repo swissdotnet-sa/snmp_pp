@@ -247,8 +247,8 @@ class Counter64: public  SnmpSyntax
 
  protected:
 
-  SNMP_PP_MUTABLE char output_buffer[CTR64OUTBUF];
-  SNMP_PP_MUTABLE bool m_changed;
+  char output_buffer[CTR64OUTBUF];
+  bool m_changed;
 };
 
 } // end of namespace Snmp_pp

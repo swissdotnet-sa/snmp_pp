@@ -44,16 +44,10 @@ namespace Snmp_pp {
 static const char *loggerModuleName = "snmp++.usm_v3";
 
 // Use locking on access methods in an multithreading enviroment.
-#ifdef _THREADS
 #define BEGIN_REENTRANT_CODE_BLOCK SnmpSynchronize auto_lock(*this)
 #define BEGIN_REENTRANT_CODE_BLOCK_CONST  \
           SnmpSynchronize auto_lock(*(PP_CONST_CAST(SnmpSynchronized*, this)))
 #define BEGIN_AUTO_LOCK(obj) SnmpSynchronize auto_lock(*obj)
-#else
-#define BEGIN_REENTRANT_CODE_BLOCK
-#define BEGIN_REENTRANT_CODE_BLOCK_CONST
-#define BEGIN_AUTO_LOCK(obj)
-#endif
 
 #ifndef min
 #define min(a,b) ( (a) < (b) ? (a) : (b) )

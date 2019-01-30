@@ -616,9 +616,9 @@ class Oid : public SnmpSyntax
 
   //----[ instance variables ]
 
-  SNMP_PP_MUTABLE char *iv_str;      // used for returning complete oid string
-  SNMP_PP_MUTABLE char *iv_part_str; // used for returning part oid string
-  SNMP_PP_MUTABLE bool m_changed;
+  char *iv_str;      // used for returning complete oid string
+  char *iv_part_str; // used for returning part oid string
+  bool m_changed;
 };
 
 //-----------[ End Oid Class ]-------------------------------------

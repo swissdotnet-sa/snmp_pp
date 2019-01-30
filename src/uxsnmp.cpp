@@ -42,11 +42,6 @@ char snmp_cpp_version[]="#(@) SNMP++ $Id$";
 
 //-----[ includes ]----------------------------------------------------
 
-#if defined (CPU) && CPU == PPC603
-#include <sockLib.h>
-#include <taskLib.h>
-#endif
-
 //----[ snmp++ includes ]----------------------------------------------
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/uxsnmp.h"        // class def for this module
@@ -1267,19 +1262,6 @@ int Snmp::trap(Pdu &pdu,                        // pdu to send
 }
 
 //----------------[ set notify_timestamp if it is null ]-------------
-#if defined (CPU) && CPU == PPC603
-
-  struct SCommTimer
-  {
-	unsigned long NumMS;
-	unsigned long FractMS;
-  };
-
-  extern "C"
-  {
-  void GetTime (struct SCommTimer *  Time);
-  }
-#endif
 
 void Snmp::check_notify_timestamp(Pdu &pdu)
 {
@@ -2039,7 +2021,6 @@ int Snmp::broadcast_discovery(UdpAddressCollection &addresses,
 //     Starts the working thread for the recovery of the pending events
 bool Snmp::start_poll_thread(const int timeout)
 {
-#ifdef _THREADS
     // store the timeout value for later
     m_iPollTimeOut = timeout;
 
@@ -2059,7 +2040,6 @@ bool Snmp::start_poll_thread(const int timeout)
         debugprintf(0, "Could not create ProcessThread");
 	m_bThreadRunning = false;
     }
-#endif
     return m_bThreadRunning;
 }
 
@@ -2072,13 +2052,11 @@ void Snmp::stop_poll_thread()
 {
     if (m_bThreadRunning == false) return;
 
-#ifdef _THREADS
     // tell the thread to stop
     m_bThreadRunning = false;
 
     // Wait for the working thread to stop....
     pthread_join(m_hThread, NULL);
-#endif
 }
 
 
@@ -2093,9 +2071,7 @@ void* Snmp::process_thread(void *arg)
 	     ->SNMPProcessEvents(pSnmp->m_iPollTimeOut);
     }
 
-#ifdef _THREADS
     pthread_exit(0);
-#endif
     return 0;
 }
 

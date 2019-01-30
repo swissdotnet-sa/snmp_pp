@@ -30,10 +30,6 @@
 #include <snmp_pp/log.h>
 #include <snmp_pp/octet.h>
 
-#if defined (CPU) && CPU == PPC603
-#include <taskLib.h>
-#endif
-
 using namespace Snmp_pp;
 
 // default log filter: logs with level less or equal filter value are logged
@@ -98,10 +94,6 @@ void LogEntry::init(void)
 	add_timestamp();
 	add_string(": ");
 
-#if defined (CPU) && CPU == PPC603
-	int pid = taskIdSelf();
-#else
-#ifdef POSIX_THREADS
         pthread_t pid = pthread_self();
 	if (sizeof(pthread_t) == sizeof(long))
 	{
@@ -114,10 +106,6 @@ void LogEntry::init(void)
 	  os.set_data(ptc, sizeof(pthread_t));
 	  add_string(os.get_printable_hex());
 	}
-#else
-	pid_t pid = getpid();
-	add_integer(pid);
-#endif
 #endif
 
 	add_string(": ");
@@ -407,9 +395,7 @@ AgentLog& AgentLogImpl::operator+=(const LogEntry* log)
 
 AgentLog* DefaultLog::instance = 0;
 LogEntry* DefaultLog::entry = 0;
-#ifdef _THREADS
 SnmpSynchronized DefaultLog::mutex;
-#endif
 
 void DefaultLog::cleanup()
 {

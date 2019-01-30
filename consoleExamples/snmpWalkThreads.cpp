@@ -51,9 +51,7 @@
 
 using namespace Snmp_pp;
 
-#ifdef _THREADS
 static pthread_attr_t* attr = 0;
-#endif
 
 UdpAddress address[1000];
 Snmp* snmp = 0;
@@ -437,13 +435,10 @@ int main(int argc, char **argv)
      v3_MP = new v3MP("dummy", 0, construct_status);
    }
 
-#ifdef _THREADS
   pthread_t thread[100];
   int started = threads;
-#endif
 
   while (threads) {
-#ifdef _THREADS
     if (!attr) {
       attr = new pthread_attr_t;
       pthread_attr_init(attr);
@@ -452,19 +447,13 @@ int main(int argc, char **argv)
     pthread_create(&thread[threads-1], 0, 
 		   &runable,
 		   (void*)new int(threads-1));
-#else
-    int n = threads - 1;
-    runable(&n);
-#endif
     threads--;
   }
-#ifdef _THREADS
   // wait for threads to terminate
   for (int i=0; i<started; i++) {
     std::cout << "JOINING THREAD " << i << std::endl;
     pthread_join(thread[i], 0);
   }
-#endif
   std::cout << "END" << std::endl;
 
    Snmp::socket_cleanup();  // Shut down socket subsystem

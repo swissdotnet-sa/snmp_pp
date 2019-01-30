@@ -519,7 +519,7 @@ class v3MP
     int max_entries;         ///< the maximum number of entries
     int upper_limit_entries; ///< the upper most number of entries to keep
     int entries;             ///< the current amount of entries
-    SNMP_PP_MUTABLE SnmpSynchronized lock;
+    SnmpSynchronized lock;
   };
 
 
@@ -625,9 +625,7 @@ class v3MP
     void set_usm(USM *usm_to_use) { usm = usm_to_use; };
 
    private:
-#ifdef _THREADS
-    SNMP_PP_MUTABLE SnmpSynchronized lock;
-#endif
+    SnmpSynchronized lock;
     struct Entry_T *table; ///< whole table
     int max_entries;       ///< the maximum number of entries
     int entries;           ///< the current amount of entries
@@ -645,7 +643,7 @@ class v3MP
   OctetStr own_engine_id_oct;
 
   unsigned int cur_msg_id;   ///< msgID to use for next message
-  SNMP_PP_MUTABLE SnmpSynchronized cur_msg_id_lock;
+  SnmpSynchronized cur_msg_id_lock;
 
   USM *usm;  ///< the USM object used
 

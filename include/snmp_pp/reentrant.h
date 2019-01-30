@@ -33,9 +33,7 @@
 #include "snmp_pp/config_snmp_pp.h"
 #include "snmp_pp/smi.h"
 
-#ifdef _THREADS
 #include <pthread.h>
-#endif
 
 namespace Snmp_pp {
 
@@ -44,9 +42,7 @@ class SnmpSynchronized {
  public:
   SnmpSynchronized();
   virtual ~SnmpSynchronized();
-#ifdef _THREADS
   pthread_mutex_t      	_mutex;
-#endif
   void lock();
   void unlock();
 };

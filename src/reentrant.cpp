@@ -34,30 +34,22 @@ namespace Snmp_pp {
 
 SnmpSynchronized::SnmpSynchronized()
 {
-#ifdef _THREADS
 	pthread_mutex_init(&_mutex, 0);
-#endif
 }
 
 SnmpSynchronized::~SnmpSynchronized()
 {
-#ifdef _THREADS
 	pthread_mutex_destroy(&_mutex);
-#endif
 }
 
 void SnmpSynchronized::lock()
 {
-#ifdef _THREADS
 	pthread_mutex_lock(&_mutex);
-#endif
 }	
 
 void SnmpSynchronized::unlock()
 {
-#ifdef _THREADS
 	pthread_mutex_unlock(&_mutex);
-#endif
 }	
 
 } // end of namespace Snmp_pp

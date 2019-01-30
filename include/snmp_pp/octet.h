@@ -361,12 +361,12 @@ class OctetStr: public  SnmpSyntax
       OutputFunctionClear
   };
 
-  SNMP_PP_MUTABLE char *output_buffer;	 // formatted Octet value
-  SNMP_PP_MUTABLE unsigned int output_buffer_len; // allocated space for string
-  SNMP_PP_MUTABLE bool m_changed;
-  SNMP_PP_MUTABLE enum OutputType output_last_type;
-  SNMP_PP_MUTABLE char output_last_np_char;
-  SNMP_PP_MUTABLE enum OutputFunction output_last_function;
+  char *output_buffer;	 // formatted Octet value
+  unsigned int output_buffer_len; // allocated space for string
+  bool m_changed;
+  enum OutputType output_last_type;
+  char output_last_np_char;
+  enum OutputFunction output_last_function;
 
 
   bool validity;		         // validity boolean

@@ -53,14 +53,9 @@ static const char *loggerModuleName = "snmp++.mp_v3";
 v3MP *v3MP::I = 0;
 
 // Use locking on access methods in an multithreaded environment.
-#ifdef _THREADS
 #define BEGIN_REENTRANT_CODE_BLOCK SnmpSynchronize auto_lock(lock)
 #define BEGIN_REENTRANT_CODE_BLOCK_CONST  \
           SnmpSynchronize auto_lock(*(PP_CONST_CAST(SnmpSynchronized*, &lock)))
-#else
-#define BEGIN_REENTRANT_CODE_BLOCK
-#define BEGIN_REENTRANT_CODE_BLOCK_CONST
-#endif
 
 // ========================[ Engine id table ]=============================
 

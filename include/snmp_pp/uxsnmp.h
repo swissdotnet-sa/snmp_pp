@@ -645,9 +645,7 @@ private:
   int m_iPollTimeOut;
 
   // Keep track of the thread.
-#ifdef _THREADS
   pthread_t m_hThread;
-#endif
 };
 
 } // end of namespace Snmp_pp

@@ -189,8 +189,8 @@ class SnmpUInt32 : public SnmpSyntax
 
  protected:
   bool valid_flag;
-  SNMP_PP_MUTABLE char output_buffer[INTOUTBUF];
-  SNMP_PP_MUTABLE bool m_changed;
+  char output_buffer[INTOUTBUF];
+  bool m_changed;
 };
 
 
@@ -312,8 +312,8 @@ class SnmpInt32 : public SnmpSyntax
 
  protected:
   bool valid_flag;
-  SNMP_PP_MUTABLE char output_buffer[INTOUTBUF];
-  SNMP_PP_MUTABLE bool m_changed;
+  char output_buffer[INTOUTBUF];
+  bool m_changed;
 };
 
 } // end of namespace Snmp_pp

@@ -64,14 +64,6 @@
 #include "snmp_pp/reentrant.h"
 #include "snmp_pp/octet.h"  // for OctetStr
 
-// include sockets header files
-// for Windows16 and Windows32 include Winsock
-// otherwise assume UNIX
-#if defined (CPU) && CPU == PPC603
-#include <inetLib.h>
-#include <hostLib.h>
-#endif
-
 #ifdef __unix
 #if !defined(_AIX)
 #include <unistd.h>
@@ -275,7 +267,7 @@ class Address : public SnmpSyntax
   virtual unsigned int hashFunction() const { return 0; }
 
  protected:
-  SNMP_PP_MUTABLE bool addr_changed;
+  bool addr_changed;
   bool valid_flag;
   unsigned char address_buffer[ADDRBUF]; // internal representation
 
@@ -487,7 +479,7 @@ class IpAddress : public Address
       { return (ip_version == version_ipv6) && have_ipv6_scope; }
 
  protected:
-  SNMP_PP_MUTABLE char output_buffer[OUTBUFF];           // output buffer
+  char output_buffer[OUTBUFF];           // output buffer
 
   // friendly name storage
   std::string iv_friendly_name;
@@ -673,7 +665,7 @@ class UdpAddress : public IpAddress
   virtual bool set_scope(const unsigned int scope);
 
  protected:
-  SNMP_PP_MUTABLE char output_buffer[OUTBUFF];           // output buffer
+  char output_buffer[OUTBUFF];           // output buffer
   char sep;                              // separator
 
   // redefined parse address

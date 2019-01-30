@@ -581,9 +581,7 @@ public:
 	 */
 	static void lock()
 	{
-#ifdef _THREADS
 		mutex.lock();
-#endif
 	}
 
 	/**
@@ -591,18 +589,14 @@ public:
 	 */
 	static void unlock()
 	{
-#ifdef _THREADS
 		mutex.unlock();
-#endif
 	}
 
 protected:
 
 	static AgentLog* instance;
 	static LogEntry* entry;
-#ifdef _THREADS
 	static SnmpSynchronized mutex;
-#endif
 	static const char defaultName;
 };
 

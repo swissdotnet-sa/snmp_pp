@@ -62,9 +62,6 @@ char notifyqueue_version[]="#(@) SNMP++ $Id$";
 #include <libsnmp.h>
 
 //-----[ includes ]----------------------------------------------------
-#if defined (CPU) && CPU == PPC603
-#include <sockLib.h>
-#endif
 
 //----[ snmp++ includes ]----------------------------------------------
 

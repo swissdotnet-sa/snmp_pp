@@ -150,23 +150,6 @@ msec &msec::operator=(const timeval &t1)
   return *this;
 }
 
-#if defined (CPU) && CPU == PPC603
-
-  struct SCommTimer
-  {
-	unsigned long NumMS;
-	unsigned long FractMS;
-  };
-
-  extern "C"
-  {
-  // The GetTime call is not part of the VxWorks library!
-  // If it is not already available in your environment,
-  // you will need to implement it!
-  void GetTime (struct SCommTimer *  Time);
-  }
-#endif
-
 void msec::refresh()
 {
   struct timezone tzone;
