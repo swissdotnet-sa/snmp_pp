@@ -75,32 +75,6 @@ namespace Snmp_pp {
 #define ADDRESS_TRACE2
 #endif
 
-#if ENABLE_THREADS
-
-#if !(defined(HAVE_GETHOSTBYADDR_R) || defined(HAVE_REENTRANT_GETHOSTBYADDR) || defined(HAVE_GETADDRINFO))
-// If you see this warning, and your system has a reentrant localtime
-// or localtime_r function report your compiler, OS,... to the authors
-// of this library, so that these settings can be changed
-#warning Threads_defined_but_no_reentrant_GETHOSTBYADDR_function
-#endif
-
-#if !(defined(HAVE_GETHOSTBYNAME_R) || defined(HAVE_REENTRANT_GETHOSTBYNAME) || defined(HAVE_GETADDRINFO))
-// If you see this warning, and your system has a reentrant localtime
-// or localtime_r function report your compiler, OS,... to the authors
-// of this library, so that these settings can be changed
-#warning Threads_defined_but_no_reentrant_GETHOSTBYNAME_function
-#endif
-
-#endif // ENABLE_THREADS
-#ifdef _THREADS
-#if defined(HAVE_GETADDRINFO) || \
-    ((defined(HAVE_GETHOSTBYNAME_R) || defined(HAVE_REENTRANT_GETHOSTBYNAME)) && \
-     (defined(HAVE_REENTRANT_GETHOSTBYADDR) || defined(HAVE_GETHOSTBYADDR_R)))
-#else
-SnmpSynchronized syscall_mutex;
-#endif
-#endif
-
 //=================================================================
 //======== Abstract Address Class Implementation ==================
 //=================================================================
@@ -829,6 +803,7 @@ int IpAddress::parse_coloned_ipstring(const char *inaddr)
 
 #undef ATOI
 
+
 //-----[ IP Address parse Address ]---------------------------------
 bool IpAddress::parse_address(const char *inaddr)
 {
@@ -846,7 +821,6 @@ bool IpAddress::parse_address(const char *inaddr)
   else if (parse_coloned_ipstring(inaddr))
     return true; // since this is a valid ipv6 string don't do any DNS
 
-#ifdef HAVE_GETADDRINFO
   struct addrinfo hints, *res = 0;
   int error;
   // XXX ensure that MAX_FRIENDLY_NAME keeps greater than INET6_ADDRSTRLEN
@@ -866,7 +840,6 @@ bool IpAddress::parse_address(const char *inaddr)
   }
   else
   {
-#if SNMP_PP_IPv6
     if (res->ai_family == AF_INET6)
     {
       if (!inet_ntop(AF_INET6,
@@ -878,7 +851,6 @@ bool IpAddress::parse_address(const char *inaddr)
       }
     }
     else
-#endif
     if (res->ai_family == AF_INET)
     {
       // now lets check out the coloned string
@@ -893,9 +865,7 @@ bool IpAddress::parse_address(const char *inaddr)
 
     debugprintf(4, "from inet_ntop: %s", ds);
     if (
-#if SNMP_PP_IPv6
        (res->ai_family == AF_INET6 && !parse_coloned_ipstring(ds)) ||
-#endif
        (res->ai_family == AF_INET && !parse_dotted_ipstring(ds))
     )
     {
@@ -910,152 +880,6 @@ bool IpAddress::parse_address(const char *inaddr)
 
     return true;
   }         // end if lookup result
-
-#else
-#if !defined HAVE_GETHOSTBYNAME_R && !defined HAVE_REENTRANT_GETHOSTBYNAME
-#ifdef _THREADS
-  SnmpSynchronize s(syscall_mutex);
-#endif
-#endif
-
-  // parse the input char array fill up internal buffer with four ip
-  // bytes set and return validity flag
-
-  char ds[61];
-
-#if defined (CPU) && CPU == PPC603
-  int lookupResult = hostGetByName(inaddr);
-
-  if (lookupResult == ERROR)
-  {
-      iv_friendly_name_status = lookupResult;
-      return false;
-  }
-  // now lets check out the dotted string
-  strcpy(ds,inet_ntoa(lookupResult));
-
-  if (!parse_dotted_ipstring(ds))
-     return false;
-
-  // save the friendly name
-  iv_friendly_name = inaddr;
-
-  return true;
-
-#else
-  hostent *lookupResult = 0;
-
-#ifdef HAVE_GETHOSTBYNAME_R
-    char buf[2048]; // TODO: Too big buffer?
-    int herrno = 0;
-    hostent lookup_buf;
-#if defined(__sun) || defined (__QNX_NEUTRINO)
-    lookupResult = gethostbyname_r(inaddr, &lookup_buf, buf, 2048, &herrno);
-#else
-    int tmp_ret = gethostbyname_r(inaddr, &lookup_buf, buf, 2048,
-                                  &lookupResult, &herrno);
-    if (tmp_ret)
-    {
-      debugprintf(1, "Error (%d, errno %d) from gethostbyname_r",
-                  tmp_ret, herrno);
-      lookupResult = 0;
-    }
-#endif
-#ifdef SNMP_PP_IPv6
-    if (!lookupResult)
-    {
-#ifdef __sun
-      lookupResult = gethostbyname_r(inaddr, AF_INET6, &lookup_buf, buf, 2048,
-                                     &lookupResult, &herrno);
-#else
-      int tmp_ret2 = gethostbyname2_r(inaddr, AF_INET6, &lookup_buf, buf,
-                                      2048, &lookupResult, &herrno);
-      if (tmp_ret2)
-      {
-        debugprintf(1, "Error (%d, errno %d) from gethostbyname2_r",
-                    tmp_ret2, herrno);
-        lookupResult = 0;
-      }
-#endif
-    }
-#endif // SNMP_PP_IPv6
-#else // not HAVE_GETHOSTBYNAME_R
-    lookupResult = gethostbyname(inaddr);
-#ifdef SNMP_PP_IPv6
-    if (!lookupResult)
-    {
-#ifdef HAVE_GETHOSTBYNAME2
-      lookupResult = gethostbyname2(inaddr, AF_INET6);
-#else
-      lookupResult = gethostbyname(inaddr);
-#endif // HAVE_GETHOSTBYNAME2
-    }
-#endif // SNMP_PP_IPv6
-#endif // HAVE_GETHOSTBYNAME_R
-    if (lookupResult)
-    {
-#ifdef SNMP_PP_IPv6
-      if (lookupResult->h_length == sizeof(in6_addr))
-      {
-        if (!lookupResult->h_addr_list[0])
-        {
-          debugprintf(1, "Error resolving host name");
-          return false;
-        }
-
-        in6_addr ipAddr;
-        memcpy((void *) &ipAddr, (void *) lookupResult->h_addr,
-               sizeof(in6_addr));
-
-        // now lets check out the coloned string
-        if (!inet_ntop(AF_INET6, &ipAddr, ds, 60))
-          return false;
-        debugprintf(4, "from inet_ntop: %s", ds);
-        if (!parse_coloned_ipstring(ds))
-          return false;
-
-        // save the friendly name
-        iv_friendly_name = inaddr;
-
-        return true;
-      }
-#endif // SNMP_PP_IPv6
-      if (lookupResult->h_length == sizeof(in_addr))
-      {
-        if (!lookupResult->h_addr_list[0])
-        {
-          debugprintf(1, "Error resolving host name");
-          return false;
-        }
-
-        in_addr ipAddr;
-        memcpy((void *) &ipAddr, (void *) lookupResult->h_addr,
-               sizeof(in_addr));
-
-        // now lets check out the dotted string
-        strcpy(ds,inet_ntoa(ipAddr));
-
-        if (!parse_dotted_ipstring(ds))
-          return false;
-
-        // save the friendly name
-        iv_friendly_name = inaddr;
-
-        return true;
-      }
-    }         // end if lookup result
-    else
-    {
-#ifdef HAVE_GETHOSTBYNAME_R
-      iv_friendly_name_status = herrno;
-#else
-      iv_friendly_name_status = h_errno;
-#endif
-      return false;
-    }
-#endif //PPC603
-
-#endif // HAVE_GETADDRINFO
   return true;
 }
 
@@ -1068,7 +892,6 @@ int IpAddress::addr_to_friendly()
   // can't look up an invalid address
   if (!valid_flag) return -1;
 
-#ifdef HAVE_GETADDRINFO
   struct addrinfo hints,*res = 0;
   int error;
   char ds[MAX_FRIENDLY_NAME];
@@ -1091,9 +914,7 @@ int IpAddress::addr_to_friendly()
   {
     iv_friendly_name_status = 0;
     if (res->ai_family == AF_INET
-#if SNMP_PP_IPv6
         || res->ai_family == AF_INET6
-#endif
         )
     {
       iv_friendly_name = res->ai_canonname;
@@ -1102,132 +923,6 @@ int IpAddress::addr_to_friendly()
     }
     freeaddrinfo(res);
   }         // end if lookup result
-#else
-#if !defined HAVE_GETHOSTBYADDR_R && !defined HAVE_REENTRANT_GETHOSTBYADDR
-#ifdef _THREADS
-  SnmpSynchronize s(syscall_mutex);
-#endif
-#endif
-
-#if defined (CPU) && CPU == PPC603
-  int lookupResult;
-  char hName[MAXHOSTNAMELEN+1];
-#else
-  hostent *lookupResult;
-#endif
-  char    ds[61];
-
-  // can't look up an invalid address
-  if (!valid_flag) return -1;
-
-  // lets try and get the friendly name from the DNS
-  strcpy(ds, this->IpAddress::get_printable());
-
-#if !(defined (CPU) && CPU == PPC603) && defined HAVE_GETHOSTBYADDR_R
-  int herrno = 0;
-  hostent lookup;
-  char buf[2048]; // TODO: Buf size too big?
-#endif
-  if (ip_version == version_ipv4)
-  {
-    in_addr ipAddr;
-
-#if defined HAVE_INET_ATON
-    if (inet_aton((char*)ds, &ipAddr) == 0)
-      return -1;    // bad address
-#elif defined HAVE_INET_PTON
-    if (inet_pton(AF_INET, (char*)ds, &ipAddr) <= 0)
-      return -1; // bad address
-#else
-    ipAddr.s_addr = inet_addr((char*)ds);
-    if (ipAddr.s_addr == INADDR_NONE)
-      return -1; // bad address
-#endif
-
-#if defined (CPU) && CPU == PPC603
-        lookupResult = hostGetByAddr(ipAddr.s_addr, hName);
-#elif defined HAVE_GETHOSTBYADDR_R
-#if defined(__sun) || defined(__QNX_NEUTRINO)
-    lookupResult = gethostbyaddr_r((char *) &ipAddr, sizeof(in_addr),
-                                   AF_INET, &lookup, buf, 2048, &herrno);
-#else
-    gethostbyaddr_r((char *) &ipAddr, sizeof(in_addr),
-                    AF_INET, &lookup, buf, 2048, &lookupResult, &herrno);
-#endif
-#else
-    lookupResult = gethostbyaddr((char *) &ipAddr, sizeof(in_addr),
-                                 AF_INET);
-#endif
-  }
-  else
-  {
-#ifdef SNMP_PP_IPv6
-    if (have_ipv6_scope)
-    {
-        // remove scope from ds
-        for (int i=strlen(ds); i >=0; i--)
-            if (ds[i] == '%')
-            {
-                ds[i] = 0;
-                break;
-            }
-    }
-
-    in6_addr ipAddr;
-
-    if (inet_pton(AF_INET6, (char*)ds, &ipAddr) <= 0)
-      return -1; // bad address
-
-#if defined (CPU) && CPU == PPC603
-        lookupResult = hostGetByAddr(ipAddr.s_addr, hName);
-#elif defined HAVE_GETHOSTBYADDR_R
-#if defined(__sun) || defined(__QNX_NEUTRINO)
-    lookupResult = gethostbyaddr_r((char *) &ipAddr, sizeof(in_addr),
-                                   AF_INET6, &lookup, buf, 2048, &herrno);
-#else
-    gethostbyaddr_r((char *) &ipAddr, sizeof(in_addr),
-                    AF_INET6, &lookup, buf, 2048, &lookupResult, &herrno);
-#endif
-#else
-    lookupResult = gethostbyaddr((char *) &ipAddr, sizeof(in6_addr),
-                                 AF_INET6);
-#endif // HAVE_GETHOSTBYADDR_R
-#else
-    return -1;
-#endif // SNMP_PP_IPv6
-  }
-  // if we found the name, then update the iv friendly name
-#if defined (CPU) && CPU == PPC603
-  if (lookupResult != ERROR)
-  {
-    iv_friendly_name = hName;
-    return 0;
-  }
-  else
-  {
-    iv_friendly_name_status = lookupResult;
-        return lookupResult;
-  }
-
-  return -1; //should not get here
-
-#else
-  if (lookupResult)
-  {
-    iv_friendly_name = lookupResult->h_name;
-    return 0;
-  }
-  else
-  {
-#ifdef HAVE_GETHOSTBYADDR_R
-    iv_friendly_name_status = herrno;
-#else
-    iv_friendly_name_status = h_errno;
-#endif
-    return iv_friendly_name_status;
-  }
-#endif //PPC603
-#endif // ?HAVE_GETADDRINFO
   return -1; //should not get here
 }
 

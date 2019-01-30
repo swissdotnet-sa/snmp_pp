@@ -143,8 +143,6 @@ void debugprintf(int, const char*, ...)
 
 #endif
 
-#ifdef _SNMPv3
-
 unsigned char *v3strcpy(const unsigned char *src, const int srclen)
 {
   unsigned char *res = new unsigned char[srclen+1];
@@ -420,8 +418,6 @@ int saveBootCounter(const char *fileName,
 
   return SNMPv3_FILEOPEN_ERROR;
 }
-
-#endif
 
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp

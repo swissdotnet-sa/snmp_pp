@@ -67,7 +67,7 @@ namespace Snmp_pp {
 /**
  * Time handling...
  */
-class DLLOPT msec
+class msec
 {
  public:
   /**
@@ -91,13 +91,13 @@ class DLLOPT msec
   msec(const int sec, const int milsec) : m_changed(true)
     { m_time.tv_sec  = sec; m_time.tv_usec = milsec; };
 
-  DLLOPT friend int operator==(const msec &t1, const msec &t2);
-  DLLOPT friend int operator!=(const msec &t1, const msec &t2);
-  DLLOPT friend int operator<(const msec &t1, const msec &t2);
-  DLLOPT friend int operator>(const msec &t1, const msec &t2);
-  DLLOPT friend int operator<=(const msec &t1, const msec &t2)
+  friend int operator==(const msec &t1, const msec &t2);
+  friend int operator!=(const msec &t1, const msec &t2);
+  friend int operator<(const msec &t1, const msec &t2);
+  friend int operator>(const msec &t1, const msec &t2);
+  friend int operator<=(const msec &t1, const msec &t2)
     { return((t1 < t2) || (t1 == t2)); };
-  DLLOPT friend int operator>=(const msec &t1, const msec &t2)
+  friend int operator>=(const msec &t1, const msec &t2)
     { return((t1 > t2) || (t1 == t2)); };
 
   msec &operator-=(const long millisec);
@@ -164,11 +164,6 @@ private:
   SNMP_PP_MUTABLE char m_output_buffer[MSECOUTBUF];
   SNMP_PP_MUTABLE bool m_changed;
 
-#if !defined HAVE_LOCALTIME_R && !defined HAVE_REENTRANT_LOCALTIME
-#ifdef _THREADS
-  static SnmpSynchronized m_localtime_mutex;
-#endif
-#endif
 };
 
 #ifdef SNMP_PP_NAMESPACE

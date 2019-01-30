@@ -117,11 +117,7 @@ void LogEntry::init(void)
 	  add_string(os.get_printable_hex());
 	}
 #else
-#ifdef HAVE_GETPID
 	pid_t pid = getpid();
-#else
-        int pid = 0;
-#endif
 	add_integer(pid);
 #endif
 #endif
@@ -254,12 +250,7 @@ bool LogEntryImpl::add_string(const char* s)
 AgentLog::AgentLog()
 {
         int *log_profile;
-#if defined(WITH_LOG_PROFILES) && defined(DEFAULT_LOG_PROFILE)
-        map<string, int *>::const_iterator item = logfilter_profiles.find(DEFAULT_LOG_PROFILE);
-        if( item != logfilter_profiles.end() )
-                log_profile = item->second;
-        else
-#endif
+
                 log_profile = default_logfilter;
 
 	for (int i=0; i<LOG_TYPES; i++)
@@ -439,9 +430,6 @@ AgentLog* DefaultLog::init_ts(AgentLog* logger)
     if (!instance)
     {
 #ifdef WITH_LOG_PROFILES
-#ifdef DEFAULT_LOG_PROFILE
-      initLogProfiles();
-#endif
 #endif
       if(!logger)
         logger = new AgentLogImpl();

@@ -73,7 +73,7 @@ namespace Snmp_pp {
  * a single entity. This type has is available in SNMPv2 but
  * may be used anywhere where needed.
  */
-class DLLOPT Counter64: public  SnmpSyntax
+class Counter64: public  SnmpSyntax
 {
  public:
 

@@ -186,8 +186,6 @@ void freeSmivalDescriptor( SmiVALUE *smival )
   smival->syntax = sNMP_SYNTAX_NULL;
 }
 
-#ifdef _SNMPv3
-
 int SnmpMessage::unloadv3( Pdu &pdu,                // Pdu returned
                            snmp_version &version,   // version
                            OctetStr &engine_id,     // optional v3
@@ -200,8 +198,6 @@ int SnmpMessage::unloadv3( Pdu &pdu,                // Pdu returned
   return unload(pdu, tmp, version, &engine_id,
                 &security_name, &security_model, &from_addr, &snmp_session);
 }
-
-#endif
 
 int SnmpMessage::load(const Pdu &cpdu,
                       const OctetStr &community,
@@ -226,9 +222,7 @@ int SnmpMessage::load(const Pdu &cpdu,
 
   // load it up
   raw_pdu->reqid = pdu->get_request_id();
-#ifdef _SNMPv3
   raw_pdu->msgid = pdu->get_message_id();
-#endif
   raw_pdu->errstat= (unsigned long) pdu->get_error_status();
   raw_pdu->errindex= (unsigned long) pdu->get_error_index();
 
@@ -419,7 +413,6 @@ int SnmpMessage::load(const Pdu &cpdu,
   }
 
   // ASN1 encode the pdu
-#ifdef _SNMPv3
   if (version == version3)
   {
     if ((!engine_id) || (!security_name))
@@ -463,7 +456,6 @@ int SnmpMessage::load(const Pdu &cpdu,
     }
   }
   else
-#endif
   status = snmp_build(raw_pdu, databuff, (int *) &bufflen, version,
                       community.data(), (int) community.len());
 
@@ -473,9 +465,7 @@ int SnmpMessage::load(const Pdu &cpdu,
   LOG_END;
 
   if ((status != 0)
-#ifdef _SNMPv3
       && ((version != version3) || (status != SNMPv3_MP_OK))
-#endif
       ) {
     valid_flag = false;
     // prevention of SNMP++ Enterprise Oid death
@@ -484,11 +474,9 @@ int SnmpMessage::load(const Pdu &cpdu,
       raw_pdu->enterprise_length=0;
     }
     snmp_free_pdu( raw_pdu);
-#ifdef _SNMPv3
     if (version == version3)
       return status;
     else
-#endif
       // NOTE: This is an assumption - in most cases during normal
       // operation the reason is a tooBig - another could be a
       // damaged variable binding.
@@ -547,7 +535,6 @@ int SnmpMessage::unload(Pdu &pdu,                 // Pdu object
 
   int status;
 
-#ifdef _SNMPv3
   OctetStr context_engine_id;
   OctetStr context_name;
   long int security_level = SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV;
@@ -570,7 +557,6 @@ int SnmpMessage::unload(Pdu &pdu,                 // Pdu object
     pdu.set_maxsize_scopedpdu(raw_pdu->maxsize_scopedpdu);
   }
   else {
-#endif
     unsigned char community_name[MAX_LEN_COMMUNITY + 1];
     int           community_len = MAX_LEN_COMMUNITY + 1;
 
@@ -582,9 +568,7 @@ int SnmpMessage::unload(Pdu &pdu,                 // Pdu object
     }
     community.set_data( community_name, community_len);
 
-#ifdef _SNMPv3
   }
-#endif
   // load up the SNMP++ variables
   pdu.set_request_id(raw_pdu->reqid);
   pdu.set_error_status((int) raw_pdu->errstat);

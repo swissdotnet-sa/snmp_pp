@@ -47,7 +47,7 @@
 namespace Snmp_pp {
 #endif
 
-class DLLOPT SnmpSynchronized {
+class SnmpSynchronized {
 
  public:
   SnmpSynchronized();
@@ -65,7 +65,7 @@ class DLLOPT SnmpSynchronized {
   void unlock();
 };
 
-class DLLOPT SnmpSynchronize {
+class SnmpSynchronize {
 
  public:
   SnmpSynchronize(SnmpSynchronized& sync) : s(sync) { s.lock(); };

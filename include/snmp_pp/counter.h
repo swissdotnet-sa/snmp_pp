@@ -68,7 +68,7 @@ namespace Snmp_pp {
  * integers but is recognized as a distinct SMI type. Counter32
  * class objects may be set or get into Vb objects.
  */
-class DLLOPT Counter32: public SnmpUInt32
+class Counter32: public SnmpUInt32
 {
  public:
 

@@ -29,8 +29,6 @@
 
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
-
 #include "snmp_pp/v3.h"
 #include "snmp_pp/usm_v3.h"
 #include "snmp_pp/auth_priv.h"
@@ -1561,7 +1559,7 @@ int USM::get_user_count() const
   return usm_user_table->size();
 }
 
-DLLOPT void USM::add_user_added_callback(const usm_add_user_callback cb)
+void USM::add_user_added_callback(const usm_add_user_callback cb)
 {
  usm_add_user_cb = cb;
 }
@@ -4510,5 +4508,3 @@ const UsmUserTableEntry *USMUserTable::peek_next(
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
 #endif
-
-#endif // _SNMPv3

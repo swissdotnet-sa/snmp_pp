@@ -1014,9 +1014,7 @@ struct snmp_pdu *snmp_pdu_create(int command)
   if (!pdu) return pdu;
   memset((char *)pdu, 0,sizeof(struct snmp_pdu));
   pdu->command = command;
-#ifdef _SNMPv3
   pdu->msgid = 0;
-#endif
   pdu->errstat = 0;
   pdu->errindex = 0;
   pdu->enterprise = NULL;
@@ -1050,10 +1048,8 @@ void clear_pdu(struct snmp_pdu *pdu, bool clear_all)
 
   pdu->command = 0;
   pdu->reqid   = 0;
-#ifdef _SNMPv3
   pdu->msgid   = 0;
   pdu->maxsize_scopedpdu = 0;
-#endif
   pdu->errstat = 0;
   pdu->errindex = 0;
 
@@ -1753,7 +1749,6 @@ int snmp_parse(struct snmp_pdu *pdu,
 }
 
 
-#ifdef _SNMPv3
 // Parse the field HeaderData of a SNMPv3 message and return the values.
 unsigned char *asn1_parse_header_data(unsigned char *buf, int *buf_len,
 				      long *msg_id, long *msg_max_size,
@@ -1889,7 +1884,6 @@ unsigned char *asn1_build_header_data(unsigned char *outBuf, int *maxLength,
 
   return outBufPtr;
 }
-#endif
 
 // Parse the ScopedPDU and return the encoded values.
 unsigned char *asn1_parse_scoped_pdu(

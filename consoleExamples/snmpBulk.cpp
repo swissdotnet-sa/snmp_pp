@@ -77,7 +77,6 @@ help()
   std::cout << "         -tN , timeout in hundredths of seconds; default is N = 100\n";
   std::cout << "         -nN , non-repeaters default is N = 0\n";
   std::cout << "         -mN , max-repetitions default is  N = 10\n";
-#ifdef _SNMPv3
   std::cout << "         -snSecurityName,\n";
   std::cout << "         -slN , securityLevel to use, default N = 3 = authPriv\n";
   std::cout << "         -smN , securityModel to use, only default N = 3 = USM possible\n";
@@ -87,14 +86,9 @@ help()
   std::cout << "         -privPROT, use privacy protocol NONE, DES, 3DESEDE, IDEA, AES128, AES192 or AES256\n";
   std::cout << "         -uaAuthPassword\n";
   std::cout << "         -upPrivPassword\n";
-#endif
 #ifdef WITH_LOG_PROFILES
   std::cout << "         -Lprofile , log profile to use, default is '"
-#ifdef DEFAULT_LOG_PROFILE
-         << DEFAULT_LOG_PROFILE
-#else
          << "original"
-#endif
          << "'\n";
 #endif
   std::cout << "         -h, -? - prints this help\n";
@@ -159,7 +153,6 @@ int main(int argc, char **argv)
    int non_reps=0;                         // non repeaters default is 0
    int max_reps=10;                        // maximum repetitions default is 10
 
-#ifdef _SNMPv3
    OctetStr privPassword("");
    OctetStr authPassword("");
    OctetStr securityName("");
@@ -170,7 +163,6 @@ int main(int argc, char **argv)
    long authProtocol = SNMP_AUTHPROTOCOL_NONE;
    long privProtocol = SNMP_PRIVPROTOCOL_NONE;
    v3MP *v3_MP;
-#endif
 
    char *ptr;
 
@@ -219,7 +211,6 @@ int main(int argc, char **argv)
      }
 #endif
 
-#ifdef _SNMPv3
      if (strstr(argv[x],"-v3")!= 0) {
        version = version3;
        continue;
@@ -297,7 +288,6 @@ int main(int argc, char **argv)
        privPassword = ptr;
        continue;
      }
-#endif
   }
 
    //----------[ create a SNMP++ session ]-----------------------------------
@@ -311,7 +301,6 @@ int main(int argc, char **argv)
    }
 
    //---------[ init SnmpV3 ]--------------------------------------------
-#ifdef _SNMPv3
    if (version == version3) {
      const char *engineId = "snmpBulk";
      const char *filename = "snmpv3_boot_counter";
@@ -351,12 +340,10 @@ int main(int argc, char **argv)
      int construct_status;
      v3_MP = new v3MP("dummy", 0, construct_status);
    }
-#endif
 
    //--------[ build up SNMP++ object needed ]-------------------------------
    address.set_port(port);
    CTarget ctarget(address);             // make a target using the address
-#ifdef _SNMPv3
    UTarget utarget(address);
 
    if (version == version3) {
@@ -370,27 +357,19 @@ int main(int argc, char **argv)
      pdu.set_context_engine_id(contextEngineID);
    }
    else {
-#endif
      ctarget.set_version(version);         // set the SNMP version SNMPV1 or V2
      ctarget.set_retry(retries);           // set the number of auto retries
      ctarget.set_timeout(timeout);         // set timeout
      ctarget.set_readcommunity(community); // set the read community name
-#ifdef _SNMPv3
    }
-#endif
 
    //-------[ issue the request, blocked mode ]-----------------------------
-   std::cout << "SNMP++ GetBulk to " << argv[1] << " SNMPV" 
-#ifdef _SNMPv3
+   std::cout << "SNMP++ GetBulk to " << argv[1] << " SNMPV"
         << ((version==version3) ? (version) : (version+1))
-#else
-        << (version+1)
-#endif
         << " Retries=" << retries
         << " Timeout=" << timeout * 10 << "ms"
         << " Non Reptrs=" << non_reps
         << " Max Reps=" << max_reps << std::endl;
-#ifdef _SNMPv3
    if (version == version3)
      std::cout << std::endl
           << "securityName= " << securityName.get_printable()
@@ -400,21 +379,17 @@ int main(int argc, char **argv)
           << ", contextEngineID= " << contextEngineID.get_printable()
           << std::endl;
    else
-#endif
      std::cout << " Community=" << community.get_printable() << std::endl << std::flush;
 
    SnmpTarget *target;
-#ifdef _SNMPv3
    if (version == version3)
      target = &utarget;
    else
-#endif
      target = &ctarget;
 
    if ((status = snmp.get_bulk(pdu,*target,non_reps,max_reps))== SNMP_CLASS_SUCCESS) {
      for (int z=0;z<pdu.get_vb_count();z++) {
        pdu.get_vb(vb,z);
-#ifdef _SNMPv3
        if (pdu.get_type() == REPORT_MSG) {
          Oid tmp;
          vb.get_oid(tmp);
@@ -424,7 +399,6 @@ int main(int argc, char **argv)
               << vb.get_printable_oid() << " = "
               << vb.get_printable_value() << std::endl;
        }
-#endif
        std::cout << "Oid = " << vb.get_printable_oid() << "\n";
        if (vb.get_syntax() != sNMP_SYNTAX_ENDOFMIBVIEW) {
          std::cout << "Value = " << vb.get_printable_value() << "\n\n";

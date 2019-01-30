@@ -78,7 +78,6 @@ help()
 	  std::cout << "options: -vN , use SNMP version 1, 2 or 3, default is 1\n";
 	  std::cout << "         -PPort , remote port to use\n";
 	  std::cout << "         -CCommunity_name, specify community default is 'public' \n";
-#ifdef _SNMPv3
           std::cout << "         -snSecurityName,\n";
           std::cout << "         -slN , securityLevel to use, default N = 3 = authPriv\n";
           std::cout << "         -smN , securityModel to use, only default N = 3 = USM possible\n";
@@ -88,14 +87,9 @@ help()
           std::cout << "         -privPROT, use privacy protocol NONE, DES, 3DESEDE, IDEA, AES128, AES192 or AES256\n";
           std::cout << "         -uaAuthPassword\n";
           std::cout << "         -upPrivPassword\n";
-#endif
 #ifdef WITH_LOG_PROFILES
     std::cout << "         -Lprofile , log profile to use, default is '"
-#ifdef DEFAULT_LOG_PROFILE
-         << DEFAULT_LOG_PROFILE
-#else
          << "original"
-#endif
          << "'\n";
 #endif
     std::cout << "         -h, -? - prints this help\n";
@@ -146,7 +140,6 @@ int main(int argc, char **argv)
    OctetStr community("public");                   // community name
    Oid ent(ENTERPRISE);                            // default enterprise
 
-#ifdef _SNMPv3
    OctetStr privPassword("");
    OctetStr authPassword("");
    OctetStr securityName("");
@@ -157,7 +150,6 @@ int main(int argc, char **argv)
    long authProtocol = SNMP_AUTHPROTOCOL_NONE;
    long privProtocol = SNMP_PRIVPROTOCOL_NONE;
    v3MP *v3_MP;
-#endif
 
    char *ptr;
 
@@ -184,7 +176,6 @@ int main(int argc, char **argv)
      }
 #endif
 
-#ifdef _SNMPv3
      if (strstr(argv[x],"-v3")!= 0) {
        version = version3;
        continue;
@@ -262,7 +253,6 @@ int main(int argc, char **argv)
        privPassword = ptr;
        continue;
      }
-#endif
   }
 
    //----------[ create a SNMP++ session ]-----------------------------------
@@ -280,7 +270,6 @@ int main(int argc, char **argv)
    }
 
    //---------[ init SnmpV3 ]--------------------------------------------
-#ifdef _SNMPv3
    if (version == version3) {
      const char *engineId = "TrapSender";
      const char *filename = "snmpv3_boot_counter";
@@ -320,7 +309,6 @@ int main(int argc, char **argv)
      int construct_status;
      v3_MP = new v3MP("dummy", 0, construct_status);
    }
-#endif
 
    //--------[ build up SNMP++ object needed ]-------------------------------
    Pdu pdu;                               // construct a Pdu object
@@ -332,7 +320,6 @@ int main(int argc, char **argv)
    pdu.set_notify_enterprise(ent);       // set up the enterprise of the trap
    address.set_port(port);
    CTarget ctarget(address);             // make a target using the address
-#ifdef _SNMPv3
    UTarget utarget(address);
 
    if (version == version3) {
@@ -344,21 +331,14 @@ int main(int argc, char **argv)
      pdu.set_context_engine_id(contextEngineID);
    }
    else {
-#endif
      ctarget.set_version(version);         // set the SNMP version SNMPV1 or V2
      ctarget.set_readcommunity(community); // set the read community name
-#ifdef _SNMPv3
    }
-#endif
 
    //-------[ Send the trap  ]------------------------------------------------
    std::cout << "SNMP++ Trap to " << argv[1] << " SNMPV"
-#ifdef _SNMPv3
         << ((version==version3) ? (version) : (version+1));
-#else
-        << (version+1);
-#endif
-#ifdef _SNMPv3
+
    if (version == version3)
      std::cout << std::endl
           << "securityName= " << securityName.get_printable()
@@ -368,15 +348,12 @@ int main(int argc, char **argv)
           << ", contextEngineID= " << contextEngineID.get_printable()
           << std::endl;
    else
-#endif
      std::cout << " Community=" << community.get_printable() << std::endl << std::flush;
 
    SnmpTarget *target;
-#ifdef _SNMPv3
    if (version == version3)
      target = &utarget;
    else
-#endif
      target = &ctarget;
 
    status = snmp->trap(pdu,*target);

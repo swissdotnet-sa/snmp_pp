@@ -55,7 +55,7 @@ class OctetStr;
  *
  * @param db_level - New level
  */
-DLLOPT void debug_set_level(const int db_level);
+void debug_set_level(const int db_level);
 
 #ifdef _DEBUG
 
@@ -69,7 +69,7 @@ DLLOPT void debug_set_level(const int db_level);
  * @param db_level - Priority of the message (0 = high)
  * @param format   - Just like printf
  */
-DLLOPT void debugprintf(int db_level, const char *format, ...);
+void debugprintf(int db_level, const char *format, ...);
 
 /**
  * SNMP++ logging function for hex strings.
@@ -79,7 +79,7 @@ DLLOPT void debugprintf(int db_level, const char *format, ...);
  * @param data     - pointer to the hex data
  * @param len      - length of the hex data
  */
-DLLOPT void debughexcprintf(int db_level, const char* comment,
+void debughexcprintf(int db_level, const char* comment,
                             const unsigned char *data, const unsigned int len);
 
 //! Wrapper for debughexcprintf() without comment.
@@ -105,7 +105,6 @@ void debugprintf(int db_level, const char *format, ...);
 
 #endif
 
-#ifdef _SNMPv3
 
 #define MAXLENGTH_ENGINEID       32
 #define MAXLENGTH_CONTEXT_NAME   32
@@ -148,7 +147,7 @@ void debugprintf(int db_level, const char *format, ...);
  *
  * @return 1 if the strings are identical, 0 if not.
  */
-DLLOPT int unsignedCharCompare(const unsigned char *str1,
+int unsignedCharCompare(const unsigned char *str1,
                                const long int ptr1len,
                                const unsigned char *str2,
                                const long int ptr2len);
@@ -163,7 +162,7 @@ DLLOPT int unsignedCharCompare(const unsigned char *str1,
  *
  * @return Pointer to a null terminated copy of src (or 0 on error).
  */
-DLLOPT unsigned char *v3strcpy(const unsigned char *src, const int srclen);
+unsigned char *v3strcpy(const unsigned char *src, const int srclen);
 
 /**
  * Encode the given string into the output buffer. For each byte
@@ -175,7 +174,7 @@ DLLOPT unsigned char *v3strcpy(const unsigned char *src, const int srclen);
  * @param out       - The output buffer for the encoded string, must have
  *                    lenth 2 * in_length
  */
-DLLOPT void encodeString(const unsigned char* in, const int in_length,
+void encodeString(const unsigned char* in, const int in_length,
 			 char* out);
 
 /**
@@ -186,7 +185,7 @@ DLLOPT void encodeString(const unsigned char* in, const int in_length,
  * @param out       - Buffer for the decoded string (half size of input
  *                    string). The String will be null terminated.
  */
-DLLOPT void decodeString(const unsigned char* in, const int in_length,
+void decodeString(const unsigned char* in, const int in_length,
 			 char* out);
 
 /**
@@ -200,7 +199,7 @@ DLLOPT void decodeString(const unsigned char* in, const int in_length,
  *         SNMPv3_NO_ENTRY_ERROR, SNMPv3_FILEOPEN_ERROR
  *
  */
-DLLOPT int getBootCounter(const char *fileName,
+int getBootCounter(const char *fileName,
                           const OctetStr &engineId, unsigned int &boot);
 
 /**
@@ -214,11 +213,10 @@ DLLOPT int getBootCounter(const char *fileName,
  *         SNMPv3_FILERENAME_ERROR.
  *
  */
-DLLOPT int saveBootCounter(const char *fileName,
+int saveBootCounter(const char *fileName,
                            const OctetStr &engineId, const unsigned int boot);
 
 
-#endif // _SNMPv3
 
 /**
  * Tool class for easy allocation of buffer space.

@@ -38,7 +38,6 @@ char snmppasswd_cpp_version[]="@(#) SNMP++ $Id$";
 using namespace Snmp_pp;
 #endif
 
-#ifdef _SNMPv3
 USM *usm;
 
 void KeyChange(Snmp* snmp, Pdu& myPdu, 
@@ -124,11 +123,7 @@ help()
 	  std::cout << "         -eEngineID, as hex\n";
 #ifdef WITH_LOG_PROFILES
     std::cout << "         -Lprofile , log profile to use, default is '"
-#ifdef DEFAULT_LOG_PROFILE
-         << DEFAULT_LOG_PROFILE
-#else
          << "original"
-#endif
          << "'\n";
 #endif
     std::cout << "         -h, -? - prints this help\n";
@@ -425,11 +420,4 @@ int main(int argc, char **argv)
    KeyChange(&snmp, pduKeyChange, newUser, newPassword, *target, AUTHKEY);
 
    Snmp::socket_cleanup();  // Shut down socket subsystem
-} 
-#else
-#include <stdio.h>
-int main()
-{
-  printf("This example needs _SNMPv3 defined.\n");
 }
-#endif

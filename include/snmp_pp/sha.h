@@ -60,9 +60,9 @@ typedef struct {
   unsigned char X[64];
 } SHA_CTX;
 
-DLLOPT int SHAInit(SHA_CTX *ctx);
-DLLOPT int SHAUpdate(SHA_CTX *ctx, const unsigned char *buf, unsigned int lenBuf);
-DLLOPT int SHAFinal(unsigned char *digest, SHA_CTX *ctx);
+int SHAInit(SHA_CTX *ctx);
+int SHAUpdate(SHA_CTX *ctx, const unsigned char *buf, unsigned int lenBuf);
+int SHAFinal(unsigned char *digest, SHA_CTX *ctx);
 
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp

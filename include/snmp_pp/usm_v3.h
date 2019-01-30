@@ -32,8 +32,6 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
-
 #include "snmp_pp/smi.h"
 #include "snmp_pp/octet.h"
 #include "snmp_pp/address.h"
@@ -238,7 +236,7 @@ class v3MP;
  *  that is Security Model independent. There is a one-to-one relationship *
  *  between userName and securityName."
  */
-class DLLOPT USM
+class USM
 {
   friend class v3MP;
 
@@ -1122,7 +1120,5 @@ private:
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
 #endif
-
-#endif // _SNMPv3
 
 #endif // _SNMP_USM_V3_H_

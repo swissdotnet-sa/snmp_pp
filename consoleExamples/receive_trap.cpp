@@ -95,7 +95,6 @@ int main(int argc, char **argv)
   }
 
    //---------[ init SnmpV3 ]--------------------------------------------
-#ifdef _SNMPv3
    const unsigned char engineId[] = 
        { 0x80, 0x00, 0x13, 0x70, 0xC0, 0xA8, 0x01, 0x0D };
    OctetStr engineID(engineId, 8);
@@ -169,7 +168,6 @@ int main(int argc, char **argv)
 		    SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_IDEA,
 		    "SHAIDEAUserAuthPassword", "SHAIDEAUserPrivPassword");
 
-#endif
    OidCollection oidc;
    TargetCollection targetc;
 

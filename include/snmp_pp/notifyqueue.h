@@ -93,7 +93,7 @@ class EventListHolder;
 /* CNotifyEvent                                                   */
 /*   a description of a sessions waiting for async notifiactions. */
 /*----------------------------------------------------------------*/
-class DLLOPT CNotifyEvent
+class CNotifyEvent
 {
  public:
 
@@ -117,7 +117,7 @@ class DLLOPT CNotifyEvent
   /* CNotifyEventQueue                                         */
   /*   class describing a collection of outstanding SNMP msgs. */
   /*-----------------------------------------------------------*/
-class DLLOPT CNotifyEventQueue: public CEvents
+class CNotifyEventQueue: public CEvents
 {
   public:
     CNotifyEventQueue(EventListHolder *holder, Snmp *session);
@@ -160,7 +160,7 @@ class DLLOPT CNotifyEventQueue: public CEvents
     /*   a container for a single item on a linked lists of      */
     /*  CNotifyEvents.                                           */
     /*-----------------------------------------------------------*/
-    class DLLOPT CNotifyEventQueueElt
+    class CNotifyEventQueueElt
     {
      public:
       CNotifyEventQueueElt(CNotifyEvent *notifyevent,

@@ -85,7 +85,7 @@ namespace Snmp_pp {
  * for objects and does not utilize pointers to external data
  * structures.
  */
-class DLLOPT Vb
+class Vb
 {
  //-----[ public members ]
  public:

@@ -33,8 +33,6 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
-
 #include "snmp_pp/reentrant.h"
 #include "snmp_pp/target.h"
 
@@ -104,7 +102,7 @@ class USM;
  * discovery and/or you don't want the delay caused by the automatic
  * engine id discovery of SNMPv3.
  */
-class DLLOPT v3MP
+class v3MP
 {
   friend class SnmpMessage;
   friend class CSNMPMessageQueue;
@@ -422,7 +420,7 @@ class DLLOPT v3MP
    * The engine id table is used to store known engine ids with
    * corresponding hostadress and port.
    */
-  class DLLOPT EngineIdTable
+  class EngineIdTable
   {
    public:
 
@@ -530,7 +528,7 @@ class DLLOPT v3MP
   /**
    * Holds cache entries for currently processed requests.
    */
-  class DLLOPT Cache
+  class Cache
   {
    public:
     Cache();
@@ -662,7 +660,5 @@ class DLLOPT v3MP
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
 #endif 
-
-#endif // _SNMPv3
 
 #endif // _SNMP_MP_V3_H_

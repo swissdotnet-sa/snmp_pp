@@ -77,10 +77,8 @@ enum snmp_version
 {
   version1,         ///< (0) SNMPv1 
   version2c         ///< (1) SNMPv2c
-#ifdef _SNMPv3
   ,version2stern,   ///< (2) Dont use this!
   version3          ///< (3) SNMPv3
-#endif
 };
 
 //----[ Target class ]-------------------------------------------------
@@ -90,7 +88,7 @@ enum snmp_version
  * @note Although it is possible to create an object of this class,
  *       you won't be happy with that...
  */
-class DLLOPT SnmpTarget
+class SnmpTarget
 {
  public:
 
@@ -277,7 +275,7 @@ class DLLOPT SnmpTarget
  * Community based target object.
  * This target can be used for SNMPv1 and SNMPv2c messages.
  */
-class DLLOPT CTarget: public SnmpTarget
+class CTarget: public SnmpTarget
 {
  public:
   /**
@@ -445,11 +443,7 @@ class DLLOPT CTarget: public SnmpTarget
 // create OidCollection type
 typedef SnmpCollection<SnmpTarget> TargetCollection;
 
-#ifdef _SNMPv3
 #define INITIAL_USER "initial"
-#else
-#define INITIAL_USER "public"
-#endif
 
 //----[  UTarget class ]----------------------------------------------
 /**
@@ -457,7 +451,7 @@ typedef SnmpCollection<SnmpTarget> TargetCollection;
  *
  * This class is used for SNMPv3 targets.
  */
-class DLLOPT UTarget: public SnmpTarget
+class UTarget: public SnmpTarget
 {
  public:
   /**
@@ -559,7 +553,6 @@ class DLLOPT UTarget: public SnmpTarget
    */
   void set_security_name(const OctetStr& oct) { security_name = oct; };
 
-#ifdef _SNMPv3
   /**
    * Set the engine id.
    *
@@ -597,7 +590,6 @@ class DLLOPT UTarget: public SnmpTarget
    * @param oct - OctetStr that will be filled with the engine id
    */
   void get_engine_id(OctetStr& oct) const { oct = engine_id; };
-#endif
 
   /**
    * Get the security_model.
@@ -655,9 +647,7 @@ class DLLOPT UTarget: public SnmpTarget
  protected:
   OctetStr security_name;
   int security_model;
-#ifdef _SNMPv3
   OctetStr engine_id;
-#endif
 };
 
 #ifdef SNMP_PP_NAMESPACE

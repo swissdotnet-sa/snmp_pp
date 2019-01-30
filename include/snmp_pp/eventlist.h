@@ -87,7 +87,7 @@ class msec;
 class Pdu;
 
 //----[ CEvents class ]------------------------------------------------
-class DLLOPT CEvents: public SnmpSynchronized {
+class CEvents: public SnmpSynchronized {
   public:
 
   // allow destruction of derived classes
@@ -121,7 +121,7 @@ class DLLOPT CEvents: public SnmpSynchronized {
 };
 
 
-class DLLOPT CEventList: public SnmpSynchronized {
+class CEventList: public SnmpSynchronized {
   public:
     CEventList() : m_head(0, 0, 0), m_msgCount(0), m_done(0) {};
     ~CEventList();
@@ -166,7 +166,7 @@ class DLLOPT CEventList: public SnmpSynchronized {
 
   private:
 
-   class DLLOPT CEventListElt
+   class CEventListElt
    {
     public:
      CEventListElt(CEvents *events,

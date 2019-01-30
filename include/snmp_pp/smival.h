@@ -114,7 +114,7 @@ typedef struct SmiVALUE
  * An "abstract" (pure virtual) class that serves as the base class
  * for all specific SNMP syntax types.
  */
-class DLLOPT SnmpSyntax {
+class SnmpSyntax {
 
 public:
 

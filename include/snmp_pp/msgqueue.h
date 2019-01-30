@@ -90,7 +90,7 @@ namespace Snmp_pp {
   /* CSNMPMessage					       */
   /*   a description of a single MIB access operation.	       */
   /*-----------------------------------------------------------*/
-class DLLOPT CSNMPMessage
+class CSNMPMessage
 {
  public:
   CSNMPMessage(unsigned long id,
@@ -141,7 +141,7 @@ class DLLOPT CSNMPMessage
   /* CSNMPMessageQueue					       */
   /*   class describing a collection of outstanding SNMP msgs. */
   /*-----------------------------------------------------------*/
-class DLLOPT CSNMPMessageQueue: public CEvents
+class CSNMPMessageQueue: public CEvents
 {
  public:
     CSNMPMessageQueue(EventListHolder *holder, Snmp *session);
@@ -186,7 +186,7 @@ class DLLOPT CSNMPMessageQueue: public CEvents
     /*   a container for a single item on a linked lists of    */
     /*  CSNMPMessages.					       */
     /*---------------------------------------------------------*/
-    class DLLOPT CSNMPMessageQueueElt
+    class CSNMPMessageQueueElt
     {
      public:
       CSNMPMessageQueueElt(CSNMPMessage *message,

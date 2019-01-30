@@ -87,7 +87,7 @@ namespace Snmp_pp {
  *       get_printable(start, len) share the same buffer which is
  *       freed and newly allocated for each call.
  */
-class DLLOPT Oid : public SnmpSyntax
+class Oid : public SnmpSyntax
 {
  public:
 
@@ -269,7 +269,7 @@ class DLLOPT Oid : public SnmpSyntax
   /**
    * Overloaded operator +, Concatenate two Oids.
    */
-  DLLOPT friend Oid operator +(const Oid &lhs, const Oid &rhs)
+  friend Oid operator +(const Oid &lhs, const Oid &rhs)
     { Oid tmp(lhs); tmp += rhs; return tmp;}
 
   /**

@@ -32,8 +32,6 @@
 #include <libsnmp.h>
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
-
 #include "snmp_pp/usm_v3.h"
 
 #ifdef SNMP_PP_NAMESPACE
@@ -65,7 +63,7 @@ class OctetStr;
  * protocols.
  *
  */
-class DLLOPT Auth
+class Auth
 {
 public:
 
@@ -195,7 +193,7 @@ public:
  * protocols.
  *
  */
-class DLLOPT Priv
+class Priv
 {
 public:
   virtual ~Priv() {}
@@ -340,7 +338,7 @@ typedef Priv* PrivPtr;
  * Class that holds all authentication and privacy protocols
  * for a snmp entity.
  */
-class DLLOPT AuthPriv
+class AuthPriv
 {
 public:
 
@@ -547,7 +545,7 @@ private:
  *
  * @see Auth
  */
-class DLLOPT AuthMD5: public Auth
+class AuthMD5: public Auth
 {
 public:
   int password_to_key(const unsigned char *password,
@@ -587,7 +585,7 @@ public:
  *
  * @see Priv
  */
-class DLLOPT PrivDES: public Priv
+class PrivDES: public Priv
 {
  public:
 #if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
@@ -652,7 +650,7 @@ class DLLOPT PrivDES: public Priv
  *
  * @see Priv
  */
-class DLLOPT PrivIDEA: public Priv
+class PrivIDEA: public Priv
 {
 public:
 
@@ -706,7 +704,7 @@ public:
  *
  * @see Priv
  */
-class DLLOPT PrivAES: public Priv
+class PrivAES: public Priv
 {
 public:
 
@@ -768,7 +766,7 @@ public:
  *       AES privacy.
  * @see PrivAES
  */
-class DLLOPT PrivAESW3DESKeyExt: public PrivAES
+class PrivAESW3DESKeyExt: public PrivAES
 {
 public:
 
@@ -804,7 +802,7 @@ private:
 #define TRIPLEDES_EDE_KEY_LEN 32
 
 
-class DLLOPT Priv3DES_EDE: public Priv
+class Priv3DES_EDE: public Priv
 {
 public:
 #if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
@@ -867,7 +865,7 @@ public:
  *
  * @see Auth
  */
-class DLLOPT AuthSHABase: public Auth
+class AuthSHABase: public Auth
 {
 public:
   int password_to_key(const unsigned char *password,
@@ -918,7 +916,7 @@ protected:
  *
  * @see Auth
  */
-class DLLOPT AuthSHA : public AuthSHABase
+class AuthSHA : public AuthSHABase
 {
 private:
 
@@ -945,7 +943,7 @@ protected:
  *
  * @see Auth
  */
-class DLLOPT AuthHMAC128SHA224 : public AuthSHABase
+class AuthHMAC128SHA224 : public AuthSHABase
 {
 private:
 
@@ -970,7 +968,7 @@ protected:
  *
  * @see Auth
  */
-class DLLOPT AuthHMAC192SHA256 : public AuthSHABase
+class AuthHMAC192SHA256 : public AuthSHABase
 {
 public:
   int get_id() const { return SNMP_AUTHPROTOCOL_HMAC192SHA256; };
@@ -992,7 +990,7 @@ protected:
  *
  * @see Auth
  */
-class DLLOPT AuthHMAC256SHA384 : public AuthSHABase
+class AuthHMAC256SHA384 : public AuthSHABase
 {
 public:
   int get_id() const { return SNMP_AUTHPROTOCOL_HMAC256SHA384; };
@@ -1014,7 +1012,7 @@ protected:
  *
  * @see Auth
  */
-class DLLOPT AuthHMAC384SHA512 : public AuthSHABase
+class AuthHMAC384SHA512 : public AuthSHABase
 {
 public:
   int get_id() const { return SNMP_AUTHPROTOCOL_HMAC384SHA512; };
@@ -1035,7 +1033,5 @@ protected:
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
 #endif
-
-#endif // _SNMPv3
 
 #endif // _SNMP_AUTH_PRIV_H_

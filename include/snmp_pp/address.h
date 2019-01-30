@@ -122,7 +122,7 @@ class GenAddress;
 /**
  * Base class of all Address classes.
  */
-class DLLOPT Address : public SnmpSyntax
+class Address : public SnmpSyntax
 {
   friend class GenAddress;
 
@@ -175,44 +175,44 @@ class DLLOPT Address : public SnmpSyntax
   virtual ~Address() {}
 
   /// overloaded equivlence operator, are two addresses equal?
-  DLLOPT friend int operator==(const Address &lhs,const Address &rhs);
+  friend int operator==(const Address &lhs,const Address &rhs);
 
   /// overloaded not equivlence operator, are two addresses not equal?
-  DLLOPT friend int operator!=(const Address &lhs, const Address &rhs)
+  friend int operator!=(const Address &lhs, const Address &rhs)
     { return !(lhs == rhs); }
 
   /// overloaded > operator, is a1 > a2
-  DLLOPT friend int operator>(const Address &lhs,const Address &rhs);
+  friend int operator>(const Address &lhs,const Address &rhs);
 
   /// overloaded >= operator, is a1 >= a2
-  DLLOPT friend int operator>=(const Address &lhs,const Address &rhs)
+  friend int operator>=(const Address &lhs,const Address &rhs)
     { if ((lhs > rhs) || (lhs == rhs)) return true;  return false; }
 
   /// overloaded < operator, is a1 < a2
-  DLLOPT friend int operator<(const Address &lhs,const Address &rhs);
+  friend int operator<(const Address &lhs,const Address &rhs);
 
   /// overloaded <= operator, is a1 <= a2
-  DLLOPT friend int operator<=(const Address &lhs, const Address &rhs)
+  friend int operator<=(const Address &lhs, const Address &rhs)
     { if ((lhs < rhs) || (lhs == rhs)) return true; return false; }
 
   /// equivlence operator overloaded, are an address and a string equal?
-  DLLOPT friend int operator==(const Address &lhs,const char *rhs);
+  friend int operator==(const Address &lhs,const char *rhs);
 
   /// overloaded not equivlence operator, are an address and string not equal?
-  DLLOPT friend int operator!=(const Address &lhs,const char *rhs)
+  friend int operator!=(const Address &lhs,const char *rhs)
     { return !(lhs == rhs); }
 
   /// overloaded < , is an address greater than a string?
-  DLLOPT friend int operator>(const Address &lhs,const char *rhs);
+  friend int operator>(const Address &lhs,const char *rhs);
 
   /// overloaded >=, is an address greater than or equal to a string?
-  DLLOPT friend int operator>=(const Address &lhs,const char *rhs);
+  friend int operator>=(const Address &lhs,const char *rhs);
 
   /// overloaded < , is an address less than a string?
-  DLLOPT friend int operator<(const Address &lhs,const char *rhs);
+  friend int operator<(const Address &lhs,const char *rhs);
 
   /// overloaded <=, is an address less than or equal to a string?
-  DLLOPT friend int operator<=(const Address &lhs,const char *rhs);
+  friend int operator<=(const Address &lhs,const char *rhs);
 
   /**
    * Overloaded operator for streaming output.
@@ -312,7 +312,7 @@ class DLLOPT Address : public SnmpSyntax
 //-----------------------------------------------------------------------
 //---------[ IP Address Class ]------------------------------------------
 //-----------------------------------------------------------------------
-class DLLOPT IpAddress : public Address
+class IpAddress : public Address
 {
  public:
   /**
@@ -523,7 +523,7 @@ class DLLOPT IpAddress : public Address
 //------------------------------------------------------------------------
 //---------[ UDP Address Class ]------------------------------------------
 //------------------------------------------------------------------------
-class DLLOPT UdpAddress : public IpAddress
+class UdpAddress : public IpAddress
 {
  public:
   /**
@@ -692,7 +692,7 @@ class DLLOPT UdpAddress : public IpAddress
 //-------------------------------------------------------------------------
 //---------[ 802.3 MAC Address Class ]-------------------------------------
 //-------------------------------------------------------------------------
-class DLLOPT MacAddress : public Address {
+class MacAddress : public Address {
 
 public:
   // constructor, no arguments
@@ -797,7 +797,7 @@ public:
 //------------------------------------------------------------------------
 //---------[ IPX Address Class ]------------------------------------------
 //------------------------------------------------------------------------
-class DLLOPT IpxAddress : public Address {
+class IpxAddress : public Address {
 
 public:
   // constructor no args
@@ -908,7 +908,7 @@ public:
 //------------------------------------------------------------------------
 //---------[ IpxSock Address Class ]--------------------------------------
 //------------------------------------------------------------------------
-class DLLOPT IpxSockAddress : public IpxAddress {
+class IpxSockAddress : public IpxAddress {
 
 public:
   // constructor, no args
@@ -1018,7 +1018,7 @@ public:
 //-------------------------------------------------------------------------
 //--------[ Generic Address ]----------------------------------------------
 //-------------------------------------------------------------------------
-class DLLOPT GenAddress : public Address
+class GenAddress : public Address
 {
  public:
   /**

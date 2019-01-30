@@ -75,7 +75,7 @@ namespace Snmp_pp {
  * among the various types.
  * class objects may be set or get into Vb objects.
  */
-class DLLOPT SnmpUInt32 : public SnmpSyntax
+class SnmpUInt32 : public SnmpSyntax
 {
  public:
 
@@ -199,7 +199,7 @@ class DLLOPT SnmpUInt32 : public SnmpSyntax
 /**
  * 32 bit signed integer class.
  */
-class DLLOPT SnmpInt32 : public SnmpSyntax
+class SnmpInt32 : public SnmpSyntax
 {
  public:
 

@@ -79,7 +79,7 @@ class Vb;
 /**
  * Pdu class...
  */
-class DLLOPT Pdu
+class Pdu
 {
  public:
 
@@ -344,7 +344,6 @@ class DLLOPT Pdu
   bool get_notify_enterprise(Oid & e) const
     { e = notify_enterprise;  return (notify_enterprise.len() == e.len()); };
 
-#ifdef _SNMPv3
   /**
    * Set the security level that should be used when this Pdu is sent.
    * The default security level of a Pdu is SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV.
@@ -454,8 +453,6 @@ class DLLOPT Pdu
    */
   unsigned long get_maxsize_scopedpdu() const { return maxsize_scopedpdu; };
 
-#endif // _SNMPv3
-
   /**
    * Get the SNMPv1 trap address
    */
@@ -508,7 +505,6 @@ class DLLOPT Pdu
   Oid notify_enterprise;
   GenAddress v1_trap_address;      // address object
   int        v1_trap_address_set;
-#ifdef _SNMPv3
   // specific Objects for SNMPv3
   int security_level;            // the securityLevel with which this Pdu
                                  // should be sent or was received
@@ -516,7 +512,6 @@ class DLLOPT Pdu
   unsigned long maxsize_scopedpdu;
   OctetStr context_name;
   OctetStr context_engine_id;
-#endif // _SNMPv3
 };
 
 #ifdef SNMP_PP_NAMESPACE

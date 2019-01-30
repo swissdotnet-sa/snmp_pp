@@ -68,8 +68,8 @@
 namespace Snmp_pp {
 #endif
 
-DLLOPT void freeSmivalDescriptor( SmiVALUE* );
-DLLOPT int convertVbToSmival( const Vb&, SmiVALUE* );
+void freeSmivalDescriptor( SmiVALUE* );
+int convertVbToSmival( const Vb&, SmiVALUE* );
 
 #define SNMP_MSG_OID_SYSUPTIME "1.3.6.1.2.1.1.3.0"
 #define SNMP_MSG_OID_TRAPID    "1.3.6.1.6.3.1.1.4.1.0"
@@ -77,7 +77,7 @@ DLLOPT int convertVbToSmival( const Vb&, SmiVALUE* );
 class Snmp;
 
 // SnmpMessage Class
-class DLLOPT SnmpMessage
+class SnmpMessage
 {
  public:
 
@@ -122,7 +122,6 @@ class DLLOPT SnmpMessage
 	  { return unload(pdu, community, version, 0, 0, 0, 0, 0); };
 
 
-#ifdef _SNMPv3
 	int loadv3( const Pdu &pdu,               // Pdu to serialize
                     const OctetStr &engine_id,    // engine_id to use
                     const OctetStr &sec_name,     // securit_name to use
@@ -140,8 +139,6 @@ class DLLOPT SnmpMessage
 
         // returns TRUE if the message in the buffer is a v3 message
         bool is_v3_message() {return v3MP::is_v3_msg(databuff, (int)bufflen);};
-
-#endif
 
 	// return the validity of the message
 	bool valid() const         { return valid_flag;};

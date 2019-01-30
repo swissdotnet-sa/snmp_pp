@@ -109,7 +109,7 @@ namespace Snmp_pp {
  * @version 3.6
  */
 
-class DLLOPT LogEntry {
+class LogEntry {
 public:
 	/**
 	 * Constructor with log class and severity level
@@ -226,7 +226,7 @@ protected:
  * @version 3.6
  */
 
-class DLLOPT LogEntryImpl : public LogEntry {
+class LogEntryImpl : public LogEntry {
 public:
 	/**
 	 * Constructor with log class and severity level
@@ -299,7 +299,7 @@ private:
  * @version 3.6
  */
  
-class DLLOPT AgentLog {
+class AgentLog {
 public:
 	/**
 	 * Default constructor.
@@ -412,7 +412,7 @@ protected:
  * @version 3.5f
  */
  
-class DLLOPT AgentLogImpl : public AgentLog {
+class AgentLogImpl : public AgentLog {
 public:
 	/**
 	 * Default constructor, with optional pointer to an open log file.
@@ -482,7 +482,7 @@ protected:
  * @author Frank Fock (singleton pattern -> Philippe Roger)
  */  
 
-class DLLOPT DefaultLog {
+class DefaultLog {
 public:
 	DefaultLog() { }
 	~DefaultLog() { }

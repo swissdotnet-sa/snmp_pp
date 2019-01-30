@@ -67,7 +67,7 @@ namespace Snmp_pp {
  * but is recognized as a distinct SMI type. Gauge32 objects may be
  * set or get into Vb objects.
  */
-class DLLOPT Gauge32: public SnmpUInt32
+class Gauge32: public SnmpUInt32
 {
  public:
 

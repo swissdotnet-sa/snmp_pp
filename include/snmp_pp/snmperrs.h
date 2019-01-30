@@ -172,7 +172,6 @@ static const char * pErrs[] = {
   "SNMP: Unknown Error Status"                                // 19
 };
 
-#ifdef _SNMPv3
 static const char * nv3Errs[] = {
   "SNMPv3: v3MP error",                 // -1400
   "SNMPv3: v3MP ok",                    // -1401
@@ -220,7 +219,6 @@ static const char * pv3Errs[] = {
   "SNMPv3: USM: Could not read from file",    // 1420
   "SNMPv3: USM: unknown errorcode"
 };
-#endif
 
 static const char * nErrs[] =
 {

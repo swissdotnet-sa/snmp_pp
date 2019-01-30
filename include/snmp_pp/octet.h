@@ -64,7 +64,7 @@ namespace Snmp_pp {
 #endif
 
 //------------[ SNMP++ OCTETSTR CLASS DEF  ]-----------------------------
-class DLLOPT OctetStr: public  SnmpSyntax
+class OctetStr: public  SnmpSyntax
 {
  public:
 
@@ -130,62 +130,62 @@ class DLLOPT OctetStr: public  SnmpSyntax
   /**
    * Equal operator for two OctetStr.
    */
-  DLLOPT friend int operator==(const OctetStr &lhs, const OctetStr &rhs);
+  friend int operator==(const OctetStr &lhs, const OctetStr &rhs);
 
   /**
    * Not equal operator for two OctetStr.
    */
-  DLLOPT friend int operator!=(const OctetStr &lhs, const OctetStr &rhs);
+  friend int operator!=(const OctetStr &lhs, const OctetStr &rhs);
 
   /**
    * Not equal operator for two OctetStr.
    */
-  DLLOPT friend int operator<(const OctetStr &lhs, const OctetStr &rhs);
+  friend int operator<(const OctetStr &lhs, const OctetStr &rhs);
 
   /**
    * Less than operator for two OctetStr.
    */
-  DLLOPT friend int operator<=(const OctetStr &lhs,const OctetStr &rhs);
+  friend int operator<=(const OctetStr &lhs,const OctetStr &rhs);
 
   /**
    * Greater than operator for two OctetStr.
    */
-  DLLOPT friend int operator>(const OctetStr &lhs, const OctetStr &rhs);
+  friend int operator>(const OctetStr &lhs, const OctetStr &rhs);
 
   /**
    * Greater than or equal operator for two OctetStr.
    */
-  DLLOPT friend int operator>=(const OctetStr &lhs, const OctetStr &rhs);
+  friend int operator>=(const OctetStr &lhs, const OctetStr &rhs);
 
   /**
    * Equal operator for OctetStr and char string.
    */
-  DLLOPT friend int operator==(const OctetStr &lhs, const char *rhs);
+  friend int operator==(const OctetStr &lhs, const char *rhs);
 
   /**
    * Not equal operator for OctetStr and char string.
    */
-  DLLOPT friend int operator!=(const OctetStr &lhs, const char *rhs);
+  friend int operator!=(const OctetStr &lhs, const char *rhs);
 
   /**
    * Less than operator for OctetStr and char string.
    */
-  DLLOPT friend int operator<(const OctetStr &lhs, const char *rhs);
+  friend int operator<(const OctetStr &lhs, const char *rhs);
 
   /**
    * Less than or equal operator for OctetStr and char string.
    */
-  DLLOPT friend int operator<=(const OctetStr &lhs, const char *rhs);
+  friend int operator<=(const OctetStr &lhs, const char *rhs);
 
   /**
    * Greater than operator for OctetStr and char string.
    */
-  DLLOPT friend int operator>(const OctetStr &lhs, const char *rhs);
+  friend int operator>(const OctetStr &lhs, const char *rhs);
 
   /**
    * Greater than or equal operator for OctetStr and char string.
    */
-  DLLOPT friend int operator>=(const OctetStr &lhs, const char *rhs);
+  friend int operator>=(const OctetStr &lhs, const char *rhs);
 
   /**
    * Append a char string to this OctetStr.

@@ -104,7 +104,7 @@ bool setCloseOnExecFlag(SnmpSocket fd);
  *
  * @note Call srand() before creating the first Snmp object.
  */
-class DLLOPT Snmp: public SnmpSynchronized
+class Snmp: public SnmpSynchronized
 {
  public:
   //------------------[ constructors ]----------------------------------
@@ -178,7 +178,6 @@ class DLLOPT Snmp: public SnmpSynchronized
    * @return Null terminated error string.
    */
   static const char *error_msg(const int c);
-#ifdef _SNMPv3
   /**
    * Returns the error code for a SNMPv3 report Oid.
    * If a report message is returned, then the contained Oid can be
@@ -199,7 +198,6 @@ class DLLOPT Snmp: public SnmpSynchronized
    */
   static const char* error_msg(const Oid& v3Oid)
     { return error_msg(error_code(v3Oid)); }
-#endif
 
   //------------------------[ Windows Sockets ]----------------------------
 
@@ -417,11 +415,9 @@ class DLLOPT Snmp: public SnmpSynchronized
 				  const snmp_version version,
 				  const OctetStr *community = 0);
 
-#ifdef _SNMPv3
   virtual int engine_id_discovery(OctetStr &engine_id,
 				  const int timeout_sec,
 				  const UdpAddress &addr);
-#endif
   //@}
 
   /**
@@ -617,7 +613,6 @@ protected:
   // map the snmp++ action to a SMI pdu type
   void map_action(unsigned short action, unsigned short &pdu_action);
 
-#ifdef _SNMPv3
   /**
    * Internal used callback data structure for async v3 requests.
    */
@@ -635,13 +630,10 @@ protected:
   friend void v3CallBack(int reason, Snmp *snmp, Pdu &pdu,
 			 SnmpTarget &target, void *v3cd);
   friend void deleteV3Callback(struct Snmp::V3CallBackData *&cbData);
-#endif
 
   //---[ instance variables ]
   SnmpSocket iv_snmp_session;
-#ifdef SNMP_PP_IPv6
   SnmpSocket iv_snmp_session_ipv6;
-#endif
 
   IpAddress listen_address;
   long current_rid;                   // current rid to use

@@ -66,11 +66,7 @@ namespace Snmp_pp {
 
 /* Borlands isdigit has a bug */
 /* XXX with a neat test this could be handled universal in configure and libsnmp.h */
-#if defined(__BCPLUSPLUS__) || !defined(HAVE_ISDIGIT)
-#define my_isdigit(c) ((c) >= '0' && (c) <= '9')
-#else
 #define my_isdigit isdigit
-#endif
 
 //=============[Oid::Oid(const char *dotted_string ]=====================
 // constructor using a dotted string

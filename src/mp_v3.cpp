@@ -30,7 +30,6 @@ char mp_v3_cpp_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
 #include "snmp_pp/v3.h"
 #include "snmp_pp/mp_v3.h"
 #include "snmp_pp/usm_v3.h"
@@ -1540,6 +1539,4 @@ int v3MP::snmp_build(struct snmp_pdu *pdu,
 
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
-#endif 
-
 #endif

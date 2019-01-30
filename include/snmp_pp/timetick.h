@@ -71,7 +71,7 @@ namespace Snmp_pp {
  * integers but is recognized as a distinct SMI type. TimeTicks
  * objects may be get or set into Vb objects.
  */
-class DLLOPT TimeTicks : public SnmpUInt32
+class TimeTicks : public SnmpUInt32
 {
  public:
 

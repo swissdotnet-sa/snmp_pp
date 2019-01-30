@@ -71,7 +71,6 @@ int retries=1;                                       // default retries is 1
 int timeout=100;                                     // default is 1 second
 u_short port=161;                                    // default snmp port is 161
 OctetStr community("public");                        // read community
-#ifdef _SNMPv3
 OctetStr privPassword("");
 OctetStr authPassword("");
 OctetStr securityName("");
@@ -82,7 +81,6 @@ OctetStr contextEngineID("");
 long authProtocol = SNMP_AUTHPROTOCOL_NONE;
 long privProtocol = SNMP_PRIVPROTOCOL_NONE;
 
-#endif
 #define BULK_MAX 10
 
 SnmpSynchronized ssync;
@@ -97,7 +95,6 @@ void* runable(void *data) {
   vb.set_oid("1");                     // set the Oid portion of the Vb
   pdu += vb;                            // add the vb to the Pdu
   CTarget ctarget(address[t]);            // make a target using the address
-#ifdef _SNMPv3
   UTarget utarget(address[t]);
 
   if (version == version3) {
@@ -111,27 +108,20 @@ void* runable(void *data) {
     pdu.set_context_engine_id(contextEngineID);
   }
   else {
-#endif
     ctarget.set_version( version);          // set the SNMP version SNMPV1 or V2 or V3
     ctarget.set_retry( retries);            // set the number of auto retries
     ctarget.set_timeout( timeout);          // set timeout
     ctarget.set_readcommunity( community);  // set the read community to use
     ctarget.set_writecommunity( community);
-#ifdef _SNMPv3
   }
-#endif
 
   //-------[ issue the request, blocked mode ]-----------------------------
   std::cout << "(" << t << "): " 
-       << "SNMP++ snmpWalk to " << address[t].get_printable() << " SNMPV" 
-#ifdef _SNMPv3
-       << ((version==version3) ? (version) : (version+1)) 
-#else
-       << (version+1) 
-#endif
+       << "SNMP++ snmpWalk to " << address[t].get_printable() << " SNMPV"
+       << ((version==version3) ? (version) : (version+1))
        << " Retries=" << retries
        << " Timeout=" << timeout * 10 <<"ms";
-#ifdef _SNMPv3
+
   if (version == version3)
     std::cout << std::endl 
 	 << "securityName= " << securityName.get_printable()
@@ -141,15 +131,12 @@ void* runable(void *data) {
 	 << ", contextEngineID= " << contextEngineID.get_printable()
 	 << std::endl;
   else
-#endif
     std::cout << " Community=" << community.get_printable() << std::endl << std::flush;
 
   SnmpTarget *target;
-#ifdef _SNMPv3
   if (version == version3)
     target = &utarget;
   else
-#endif
     target = &ctarget;
 
   int status = 0;
@@ -163,7 +150,6 @@ void* runable(void *data) {
     ssync.lock();
     for ( int z=0;z<pdu.get_vb_count(); z++) {
       pdu.get_vb( vb,z);
-#ifdef _SNMPv3
       if (pdu.get_type() == REPORT_MSG) {
 	Oid tmp;
 	vb.get_oid(tmp);
@@ -175,7 +161,6 @@ void* runable(void *data) {
 	ssync.unlock();
 	return 0;
       }
-#endif
       objects++;
       // look for var bind exception, applies to v2 only   
       if ( vb.get_syntax() != sNMP_SYNTAX_ENDOFMIBVIEW) {
@@ -225,7 +210,6 @@ static void help()
     std::cout << "         -CCommunity_name, specify community default is 'public' \n";
     std::cout << "         -rN , retries default is N = 1 retry\n";
     std::cout << "         -tN , timeout in hundredths of seconds; default is N = 100\n";
-#ifdef _SNMPv3
     std::cout << "         -snSecurityName,\n";
     std::cout << "         -slN , securityLevel to use, default N = 3 = authPriv\n";
     std::cout << "         -smN , securityModel to use, only default N = 3 = USM possible\n";
@@ -235,14 +219,9 @@ static void help()
     std::cout << "         -privPROT, use privacy protocol NONE, DES, 3DESEDE, IDEA, AES128, AES192 or AES256\n";
     std::cout << "         -uaAuthPassword\n";
     std::cout << "         -upPrivPassword\n";
-#endif
 #ifdef WITH_LOG_PROFILES
     std::cout << "         -Lprofile , log profile to use, default is '"
-#ifdef DEFAULT_LOG_PROFILE
-         << DEFAULT_LOG_PROFILE
-#else
          << "original"
-#endif
          << "'\n";
 #endif
     std::cout << "         -h, -? - prints this help\n";
@@ -326,7 +305,6 @@ int main(int argc, char **argv)
      }
 #endif
 
-#ifdef _SNMPv3
      if (strstr(argv[x],"-v3")!= 0) {
        version = version3;
        continue;
@@ -412,17 +390,13 @@ int main(int argc, char **argv)
        privPassword = ptr;
        continue;
      }
-#endif
    }
 
    //----------[ create a SNMP++ session ]-----------------------------------
    int status;
    // bind to any port and use IPv6 if enabled
-#ifdef SNMP_PP_IPv6
+
    snmp = new Snmp(status, 0, true);
-#else
-   snmp = new Snmp(status);
-#endif
 
    if (status != SNMP_CLASS_SUCCESS) {
      std::cout << "SNMP++ Session Create Fail, " 
@@ -430,7 +404,6 @@ int main(int argc, char **argv)
      return -3;
    }
 
-#ifdef _SNMPv3
    //---------[ init SnmpV3 ]--------------------------------------------
    v3MP *v3_MP;
    if (version == version3) {
@@ -472,7 +445,6 @@ int main(int argc, char **argv)
      int construct_status;
      v3_MP = new v3MP("dummy", 0, construct_status);
    }
-#endif
 
 #ifdef _THREADS
   pthread_t thread[100];
@@ -505,8 +477,6 @@ int main(int argc, char **argv)
   std::cout << "END" << std::endl;
 
    Snmp::socket_cleanup();  // Shut down socket subsystem
-#ifdef _SNMPv3
    delete v3_MP;
-#endif
 }
 

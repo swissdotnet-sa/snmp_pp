@@ -54,28 +54,9 @@ char msec_cpp_version[]="@(#) SNMP++ $Id$";
 #endif
 #endif
 
-#if ENABLE_THREADS
-
-#ifndef HAVE_REENTRANT_LOCALTIME
-#ifndef HAVE_LOCALTIME_R
-// If you see this warning, and your system has a reentrant localtime
-// or localtime_r function report your compiler, OS,... to the authors
-// of this library, so that these settings can be changed
-#warning Threads_defined_but_no_reentrant_LOCALTIME_function
-#endif
-#endif
-
-#endif // ENABLE_THREADS
-
 
 #ifdef SNMP_PP_NAMESPACE
 namespace Snmp_pp {
-#endif
-
-#if !defined HAVE_LOCALTIME_R && !defined HAVE_REENTRANT_LOCALTIME
-#ifdef _THREADS
-SnmpSynchronized m_localtime_mutex;
-#endif
 #endif
 
 int operator==(const msec &t1, const msec &t2)
@@ -197,32 +178,9 @@ msec &msec::operator=(const timeval &t1)
 
 void msec::refresh()
 {
-#ifdef WIN32
-  struct _timeb timebuffer;
-  _ftime( &timebuffer );
-  m_time.tv_usec = timebuffer.millitm;
-  m_time.tv_sec  = SAFE_ULONG_CAST(timebuffer.time);
-#elif defined (CPU) && CPU == PPC603
-
-  SCommTimer theTime;
-
-  GetTime(&theTime);
-
-  m_time.tv_sec = theTime.NumMS/1000;
-  m_time.tv_usec = theTime.NumMS % 1000;
-
-#else
-#ifdef HAVE_CLOCK_GETTIME
-  struct timespec tsp;
-  clock_gettime(CLOCK_MONOTONIC, &tsp);
-  m_time.tv_sec = tsp.tv_sec;
-  m_time.tv_usec = tsp.tv_nsec / 1000000;
-#else  
   struct timezone tzone;
   gettimeofday((timeval *)&m_time, &tzone);
   m_time.tv_usec /= 1000; // convert usec to millisec
-#endif
-#endif
   m_changed = true;
 }
 
@@ -266,20 +224,10 @@ const char *msec::get_printable() const
   char msec_buffer[5];
   msec *nc_this = PP_CONST_CAST(msec*, this);
 
-#ifdef HAVE_LOCALTIME_R
   struct tm stm;
   localtime_r((const time_t *)&m_time.tv_sec, &stm);
   strftime(nc_this->m_output_buffer, sizeof(m_output_buffer),
            "%H:%M:%S.", &stm);
-#else
-#if defined _THREADS && !defined HAVE_REENTRANT_LOCALTIME
-  SnmpSynchronize s(m_localtime_mutex);  // Serialize all calls to localtime!
-#endif
-  struct tm *tmptr;
-  tmptr = localtime((time_t *)&m_time.tv_sec);
-  strftime(nc_this->m_output_buffer, sizeof(m_output_buffer),
-           "%H:%M:%S.", tmptr);
-#endif
 
   sprintf(msec_buffer, "%.3ld", (long)m_time.tv_usec);
   strcat(nc_this->m_output_buffer, msec_buffer);

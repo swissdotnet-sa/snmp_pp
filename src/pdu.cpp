@@ -72,10 +72,8 @@ Pdu::Pdu()
   : vbs(0), vbs_size(0), vb_count(0), error_status(0), error_index(0),
     validity(true), request_id(0), pdu_type(0), notify_timestamp(0),
     v1_trap_address_set(false)
-#ifdef _SNMPv3
     , security_level(SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV),
     message_id(0), maxsize_scopedpdu(0)
-#endif
 {
 }
 
@@ -84,10 +82,8 @@ Pdu::Pdu(Vb* pvbs, const int pvb_count)
   : vbs(0), vbs_size(0), vb_count(0), error_status(0), error_index(0),
     validity(true), request_id(0), pdu_type(0), notify_timestamp(0),
     v1_trap_address_set(false)
-#ifdef _SNMPv3
     , security_level(SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV),
     message_id(0), maxsize_scopedpdu(0)
-#endif
 {
   if (pvb_count == 0) return;    // zero is ok
 
@@ -156,13 +152,12 @@ Pdu& Pdu::operator=(const Pdu &pdu)
   notify_id         = pdu.notify_id;
   notify_timestamp  = pdu.notify_timestamp;
   notify_enterprise = pdu.notify_enterprise;
-#ifdef _SNMPv3
   security_level    = pdu.security_level;
   message_id        = pdu.message_id;
   context_name      = pdu.context_name;
   context_engine_id = pdu.context_engine_id;
   maxsize_scopedpdu = pdu.maxsize_scopedpdu;
-#endif
+
   if (pdu.v1_trap_address_set)
   {
     v1_trap_address = pdu.v1_trap_address;
@@ -475,7 +470,6 @@ int Pdu::get_asn1_length() const
   else if (length <= 0xFFFFFF) length += 5;
   else                         length += 6;
 
-#ifdef _SNMPv3
   // now the scopedpdu part sequence (4), context engine, id context name
   length += 4 + 2 + context_engine_id.len() + 2 + context_name.len();
 
@@ -488,7 +482,6 @@ int Pdu::get_asn1_length() const
 
     length += 4;
   }
-#endif
 
   return length;
 }
@@ -539,13 +532,11 @@ void Pdu::clear()
   for (int z = 0; z < vb_count; ++z)  delete vbs[z];
   vb_count = 0;
 
-#ifdef _SNMPv3
   security_level    = SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV;
   message_id        = 0;
   maxsize_scopedpdu = 0;
   context_name.clear();
   context_engine_id.clear();
-#endif // _SNMPv3
 }
 
 // Does the type of response match the type of request

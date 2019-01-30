@@ -28,49 +28,13 @@
 #ifndef _CONFIG_SNMP_PP_H_
 #define _CONFIG_SNMP_PP_H_
 
-#ifndef __LIBSNMP_H_INCLUDED__
-#include <libsnmp.h>
-#endif
-
-#define SNMP_PP_VERSION_STRING "3.3.11"
-#define SNMP_PP_VERSION 3
-#define SNMP_PP_RELEASE 3
-#define SNMP_PP_PATCHLEVEL 11
-
 //! The maximum size of a message that can be sent or received.
 #define MAX_SNMP_PACKET 4096
-
-#ifndef DLLOPT
-#if defined (WIN32) && defined (SNMP_PP_DLL)
-#ifdef SNMP_PP_EXPORTS
-#define DLLOPT __declspec(dllexport)
-#define DLLOPT_TEMPL
-#else
-#define DLLOPT __declspec(dllimport)	
-#define DLLOPT_TEMPL extern
-#endif
-#else
-#define DLLOPT
-#define DLLOPT_TEMPL
-#endif
-#endif
 
 /*
  * some permanent parts from autoconf process
  */
-#if 1
-#define _SNMPv3 1
-#else
-#define _NO_SNMPv3 1
-#endif
-#if 1
-#define SNMP_PP_IPv6 1
-#endif
-#if 1
-#define ENABLE_THREADS 1
-#else
-#define _NO_THREADS
-#endif
+
 #if 1
 #define HAVE_LIBSSL 1
 #endif
@@ -96,19 +60,8 @@
 // to enable IDEA support. (note this is not defined by a rfc)
 // #define _USE_IDEA
 
-#if defined(_SNMPv3) || !defined(_NO_SNMPv3)
-#  if defined(HAVE_LIBSSL)
-#    define _USE_OPENSSL
-#  elif defined(HAVE_LIBTOMCRYPT)
-#    define _USE_LIBTOMCRYPT
-#  elif HAVE_LIBDES
-#    define _USE_3DES_EDE
-#  else
-#    warn No crypto library found - disable SNMPv3
-#    undef _SNMPv3
-#    define _NO_SNMPv3
-#  endif
-#endif
+#define _USE_OPENSSL
+
 
 // define _NO_LOGGING if you do not want any logging output 
 // (increases performance drastically and minimizes memory consumption)
@@ -149,11 +102,7 @@
   typedef int SocketLengthType;
 #endif
 
-#ifdef SNMP_PP_IPv6
   typedef struct sockaddr_storage SocketAddrType;
-#else
-  typedef struct sockaddr_in SocketAddrType;
-#endif
 
 // Not fully tested!
 //#define HAVE_POLL_SYSCALL
@@ -246,38 +195,15 @@ typedef long long pp_int64;
 #define SAFE_LONG_CAST(expr)  ((long)(expr))
 #define SAFE_ULONG_CAST(expr) ((unsigned long)(expr))
 
-#ifdef ENABLE_THREADS
-#ifdef WIN32
-
-#ifndef _THREADS
-#define _WIN32THREADS
-#define VC_EXTRALEAN
-#define _THREADS
-#endif
-
-#else  // !WIN32
 
 #ifndef _THREADS
 #define _THREADS
-#endif
-
-#ifdef __APPLE__
-#ifndef __unix
-#define __unix
-#endif
 #endif
 
 #ifndef POSIX_THREADS
-#ifdef HAVE_PTHREAD
 #define POSIX_THREADS
-// Use error checking by default since AGENT++ 4.0.8, define
-// AGENTPP_PTHREAD_RECURSIVE here to get behavior of AGENT++ 4.0.7 and before:
-// #define AGENTPP_PTHREAD_RECURSIVE
-#endif
 #endif
 
-#endif // WIN32
-#endif // ENABLE_THREADS
 
 #ifdef _THREADS
 #ifndef _WIN32THREADS

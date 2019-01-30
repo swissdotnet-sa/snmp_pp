@@ -30,8 +30,6 @@ char auth_priv_version[]="@(#) SNMP++ $Id$";
 
 #include "snmp_pp/config_snmp_pp.h"
 
-#ifdef _SNMPv3
-
 // Only use DES, AES, SHA1 and MD5 from libtomcrypt if openssl is not used
 #if defined(_USE_LIBTOMCRYPT) && !defined(_USE_OPENSSL)
 #include <tomcrypt.h>
@@ -2543,5 +2541,3 @@ AuthSHABase::Hasher *AuthHMAC384SHA512::get_hasher() const
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
 #endif
-
-#endif // _SNMPv3

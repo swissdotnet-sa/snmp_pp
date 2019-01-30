@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
 project(snmp++ VERSION 3.3.11)
 
+message(STATUS "Version: ${PROJECT_VERSION}")
+message(STATUS "Version: ${PROJECT_VERSION_MAJOR}")
+message(STATUS "Version: ${PROJECT_VERSION_MINOR}")
+message(STATUS "Version: ${PROJECT_VERSION_PATCH}")
+
+add_compile_definitions(SNMP_PP_VERSION_STRING="${PROJECT_VERSION}")
+add_compile_definitions(SNMP_PP_VERSION=${PROJECT_VERSION_MAJOR})
+add_compile_definitions(SNMP_PP_RELEASE=${PROJECT_VERSION_MINOR})
+add_compile_definitions(SNMP_PP_PATCHLEVEL=${PROJECT_VERSION_PATCH})
+
 add_library(snmp++
     src/address.cpp
     src/asn1.cpp
@@ -34,8 +44,8 @@ add_library(snmp++
 )
 add_library(snmp++::snmp++ ALIAS snmp++)
 
-find_package(Threads)
-find_package(OpenSSL)
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 target_link_libraries(snmp++
     PUBLIC

@@ -60,11 +60,7 @@ namespace Snmp_pp {
 
 #define PUBLIC "public"
 
-#ifdef _SNMPv3
 #define UTARGET_DEFAULT_VERSION version3
-#else
-#define UTARGET_DEFAULT_VERSION version1
-#endif
 
 // class variables for default behavior control
 unsigned long SnmpTarget::default_timeout = 100;
@@ -251,11 +247,7 @@ void CTarget::clear()
 // UTarget constructor no args
 UTarget::UTarget()
   : security_name(INITIAL_USER),
-#ifdef _SNMPv3
   security_model(SNMP_SECURITY_MODEL_USM), engine_id("")
-#else
-  security_model(SNMP_SECURITY_MODEL_V1)
-#endif
 {
   version = UTARGET_DEFAULT_VERSION;
   ttype = type_utarget;
@@ -265,9 +257,7 @@ UTarget::UTarget()
 // UTarget constructor with args
 UTarget::UTarget(const Address &address, const char *sec_name, const int sec_model)
   : SnmpTarget(address), security_name(sec_name), security_model(sec_model)
-#ifdef _SNMPv3
     ,engine_id("")
-#endif
 {
   version = UTARGET_DEFAULT_VERSION;
   ttype = type_utarget;
@@ -277,9 +267,7 @@ UTarget::UTarget(const Address &address, const char *sec_name, const int sec_mod
 // UTarget constructor with args
 UTarget::UTarget(const Address &address, const OctetStr &sec_name, const int sec_model)
   : SnmpTarget(address), security_name(sec_name), security_model(sec_model)
-#ifdef _SNMPv3
     ,engine_id("")
-#endif
 {
   version = UTARGET_DEFAULT_VERSION;
   ttype = type_utarget;
@@ -289,11 +277,7 @@ UTarget::UTarget(const Address &address, const OctetStr &sec_name, const int sec
 // UTarget constructor with args
 UTarget::UTarget(const Address &address)
   : SnmpTarget(address), security_name(INITIAL_USER),
-#ifdef _SNMPv3
     security_model(SNMP_SECURITY_MODEL_USM), engine_id("")
-#else
-    security_model(SNMP_SECURITY_MODEL_V1)
-#endif
 {
   version = UTARGET_DEFAULT_VERSION;
   ttype = type_utarget;
@@ -304,9 +288,7 @@ UTarget::UTarget(const Address &address)
 UTarget::UTarget(const UTarget &target)
   : SnmpTarget()
 {
-#ifdef _SNMPv3
   engine_id = target.engine_id;
-#endif
   security_name = target.security_name;
   security_model = target.security_model;
   my_address = target.my_address;
@@ -321,9 +303,7 @@ UTarget::UTarget(const UTarget &target)
 // set the address
 bool UTarget::set_address(const Address &address)
 {
-#ifdef _SNMPv3
    engine_id = ""; // delete engine_id
-#endif
    return SnmpTarget::set_address(address);
 }
 
@@ -354,9 +334,7 @@ UTarget& UTarget::operator=(const UTarget& target)
   timeout = target.timeout;
   retries = target.retries;
 
-#ifdef _SNMPv3
   engine_id = target.engine_id;
-#endif
   security_name = target.security_name;
   security_model = target.security_model;
   version = target.version;
@@ -384,12 +362,9 @@ void UTarget::clear()
 {
   SnmpTarget::clear();
   security_name = INITIAL_USER;
-#ifdef _SNMPv3
   security_model = SNMP_SECURITY_MODEL_USM;
   engine_id.clear();
-#else
-  security_model = SNMP_SECURITY_MODEL_V1;
-#endif
+
   version = UTARGET_DEFAULT_VERSION;
   ttype = type_utarget;
 }

@@ -135,10 +135,8 @@ typedef struct sockaddr_in  ipaddr;
 struct snmp_pdu {
     int        command;      // pdu type
     unsigned long  reqid;    // Request id
-#ifdef _SNMPv3
     unsigned long  msgid;
     unsigned long  maxsize_scopedpdu;
-#endif
     unsigned long  errstat;  // Error status
     unsigned long  errindex; // Error index
 
@@ -177,7 +175,7 @@ struct counter64 {
 
 
 // prototypes for encoding routines
-DLLOPT unsigned char *asn_parse_int(unsigned char *data, int *datalength,
+unsigned char *asn_parse_int(unsigned char *data, int *datalength,
                                     unsigned char *type,
                                     long *intp);
 
@@ -188,7 +186,7 @@ inline unsigned char *asn_parse_int(unsigned char *data, int *datalength,
 { return asn_parse_int(data, datalength, type, (long*)intp); }
 
 
-DLLOPT unsigned char *asn_parse_unsigned_int(unsigned char *data,        
+unsigned char *asn_parse_unsigned_int(unsigned char *data,
                                              int *datalength,
                                              unsigned char *type,
                                              unsigned long *intp);
@@ -198,7 +196,7 @@ inline unsigned char *asn_parse_unsigned_int(unsigned char *data,
                                              long *intp)
 { return asn_parse_unsigned_int(data, datalength, type, (unsigned long*)intp); }
 
-DLLOPT unsigned char *asn_build_int(unsigned char *data, int *datalength,
+unsigned char *asn_build_int(unsigned char *data, int *datalength,
                                     const unsigned char type,
                                     const long *intp);
 
@@ -207,121 +205,121 @@ inline unsigned char *asn_build_int(unsigned char *data, int *datalength,
                                     const unsigned long *intp)
 { return asn_build_int(data, datalength, type, (const long*)intp); }
 
-DLLOPT unsigned char *asn_build_unsigned_int(unsigned char *data,
+unsigned char *asn_build_unsigned_int(unsigned char *data,
                                              int *datalength,
                                              unsigned char type,
                                              unsigned long *intp);
 
-DLLOPT unsigned char *asn_parse_string(unsigned char *data, int *datalength,
+unsigned char *asn_parse_string(unsigned char *data, int *datalength,
                                        unsigned char *type,
                                        unsigned char *string,
                                        int *strlength);
 
-DLLOPT unsigned char *asn_build_string(unsigned char *data, int *datalength,
+unsigned char *asn_build_string(unsigned char *data, int *datalength,
                                        const unsigned char type,
                                        const unsigned char *string,
                                        const int strlength);
 
-DLLOPT unsigned char *asn_parse_header(unsigned char *data, int *datalength,
+unsigned char *asn_parse_header(unsigned char *data, int *datalength,
                                        unsigned char *type);
 
-DLLOPT unsigned char *asn_build_header(unsigned char *data, int *datalength,
+unsigned char *asn_build_header(unsigned char *data, int *datalength,
                                        unsigned char type, int length);
 
-DLLOPT unsigned char *asn_build_sequence(unsigned char *data,
+unsigned char *asn_build_sequence(unsigned char *data,
                                          int *datalength,
                                          unsigned char type,
                                          int length);
 
-DLLOPT unsigned char *asn_parse_length(unsigned char *data,
+unsigned char *asn_parse_length(unsigned char *data,
                                        unsigned long *length);
 
-DLLOPT unsigned char *asn_build_length(unsigned char *data, int *datalength,
+unsigned char *asn_build_length(unsigned char *data, int *datalength,
                                        int length);
 
-DLLOPT unsigned char *asn_parse_objid(unsigned char *data, int *datalength,
+unsigned char *asn_parse_objid(unsigned char *data, int *datalength,
                                       unsigned char *type,
                                       oid *objid, int *objidlength);
 
-DLLOPT unsigned char *asn_build_objid(unsigned char *data, int *datalength,
+unsigned char *asn_build_objid(unsigned char *data, int *datalength,
                                       unsigned char type,
                                       oid *objid, int objidlength);
 
-DLLOPT void asn_build_subid(unsigned long subid, unsigned char*& bp);
+void asn_build_subid(unsigned long subid, unsigned char*& bp);
 
-DLLOPT unsigned char *asn_parse_null(unsigned char *data, int *datalength,
+unsigned char *asn_parse_null(unsigned char *data, int *datalength,
                                      unsigned char *type);
 
-DLLOPT unsigned char *asn_build_null(unsigned char *data,int *datalength,
+unsigned char *asn_build_null(unsigned char *data,int *datalength,
                                      unsigned char type);
 
-DLLOPT unsigned char *asn_parse_bitstring(unsigned char *data, int *datalength,
+unsigned char *asn_parse_bitstring(unsigned char *data, int *datalength,
                                           unsigned char *type,
                                           unsigned char *string,
                                           int *strlength);
 
-DLLOPT unsigned char *asn_build_bitstring(unsigned char *data, int *datalength,
+unsigned char *asn_build_bitstring(unsigned char *data, int *datalength,
                                           unsigned char type,
                                           unsigned char *string,
                                           int strlength);
 
-DLLOPT unsigned char *asn_parse_unsigned_int64(unsigned char *data,
+unsigned char *asn_parse_unsigned_int64(unsigned char *data,
                                                int *datalength,
                                                unsigned char *type,
                                                struct counter64 *cp);
 
-DLLOPT unsigned char *asn_build_unsigned_int64(unsigned char *data,
+unsigned char *asn_build_unsigned_int64(unsigned char *data,
                                                int *datalength,
                                                unsigned char type,
                                                struct counter64 *cp);
 
-DLLOPT struct snmp_pdu *snmp_pdu_create(int command);
+struct snmp_pdu *snmp_pdu_create(int command);
 
-DLLOPT void snmp_free_pdu(struct snmp_pdu *pdu);
+void snmp_free_pdu(struct snmp_pdu *pdu);
 
-DLLOPT int snmp_build(struct snmp_pdu *pdu,
+int snmp_build(struct snmp_pdu *pdu,
                       unsigned char *packet,
                       int *out_length,
                       const long version,
                       const unsigned char* community, const int community_len);
 
-DLLOPT void snmp_add_var(struct snmp_pdu *pdu,
+void snmp_add_var(struct snmp_pdu *pdu,
                          oid *name, int name_length,
                          SmiVALUE *smival);
 
-DLLOPT int snmp_parse(struct snmp_pdu *pdu,
+int snmp_parse(struct snmp_pdu *pdu,
                       unsigned char *data, int data_length,
                       unsigned char *community_name, int &community_len,
                       snmp_version &version);
 
-DLLOPT unsigned char *build_vb(struct snmp_pdu *pdu,
+unsigned char *build_vb(struct snmp_pdu *pdu,
 			       unsigned char *buf, int *buf_len);
 
-DLLOPT unsigned char *build_data_pdu(struct snmp_pdu *pdu,
+unsigned char *build_data_pdu(struct snmp_pdu *pdu,
 				     unsigned char *buf, int *buf_len,
 				     unsigned char *vb_buf, int vb_buf_len);
 
-DLLOPT unsigned char *snmp_build_var_op(unsigned char *data,
+unsigned char *snmp_build_var_op(unsigned char *data,
                                         oid * var_name, int *var_name_len,
                                         unsigned char var_val_type,
                                         int var_val_len,
                                         unsigned char *var_val,
                                         int *listlength);
 
-DLLOPT unsigned char *snmp_parse_var_op(unsigned char *data,
+unsigned char *snmp_parse_var_op(unsigned char *data,
                                         oid *var_name, int *var_name_len,
                                         unsigned char  *var_val_type,
                                         int *var_val_len,
                                         unsigned char  **var_val,        
                                         int *listlength);
 
-DLLOPT int snmp_parse_data_pdu(struct snmp_pdu *pdu,
+int snmp_parse_data_pdu(struct snmp_pdu *pdu,
                                unsigned char *&data, int &length);
                                
-DLLOPT int snmp_parse_vb(struct snmp_pdu *pdu,
+int snmp_parse_vb(struct snmp_pdu *pdu,
                          unsigned char *&data, int &data_len);
 
-DLLOPT void clear_pdu(struct snmp_pdu *pdu, bool clear_all = false);
+void clear_pdu(struct snmp_pdu *pdu, bool clear_all = false);
 
 /**
  * Encode the given values for the HeaderData into the buffer.
@@ -344,7 +342,7 @@ DLLOPT void clear_pdu(struct snmp_pdu *pdu, bool clear_all = false);
  * @return - Pointer to the first free byte in the buffer or
  *           NULL if an error occured
  */
-DLLOPT unsigned char *asn1_build_header_data(unsigned char *outBuf,
+unsigned char *asn1_build_header_data(unsigned char *outBuf,
 					     int *maxLength,
 					     long msgID,
 					     long maxMessageSize,
@@ -377,7 +375,7 @@ DLLOPT unsigned char *asn1_build_header_data(unsigned char *outBuf,
  *            the object HeaderData (i.e. the start of the next object).
  *            Returns NULL on any error.
  */
-DLLOPT unsigned char *asn1_parse_header_data(unsigned char *buf, int *buf_len,
+unsigned char *asn1_parse_header_data(unsigned char *buf, int *buf_len,
 					     long *msg_id, long *msg_max_size,
 					     unsigned char *msg_flags,
 					     long *msg_security_model);
@@ -404,7 +402,7 @@ DLLOPT unsigned char *asn1_parse_header_data(unsigned char *buf, int *buf_len,
  * @return - Pointer to the data object of the scopedPDU or
  *           NULL on any error.
  */
-DLLOPT unsigned char *asn1_parse_scoped_pdu(
+unsigned char *asn1_parse_scoped_pdu(
          unsigned char *scoped_pdu, int *scoped_pdu_len,
          unsigned char *context_engine_id, int *context_engine_id_len,
          unsigned char *context_name, int *context_name_len );
@@ -431,7 +429,7 @@ DLLOPT unsigned char *asn1_parse_scoped_pdu(
  * @return - Pointer to the first free byte in the buffer or
  *           NULL if an error occured
  */
-DLLOPT unsigned char *asn1_build_scoped_pdu(
+unsigned char *asn1_build_scoped_pdu(
                unsigned char *outBuf, int *max_len,
                unsigned char *contextEngineID, long contextEngineIDLength,
                unsigned char *contextName, long contextNameLength,

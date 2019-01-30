@@ -57,10 +57,8 @@ char counter64_cpp_version[]="@(#) SNMP++ $Id$";
 #include "snmp_pp/asn1.h"
 #include "snmp_pp/v3.h"
 
-#ifdef HAVE_INTTYPES_H
 #define __STDC_FORMAT_MACROS 1
 #include <inttypes.h>
-#endif
 
 
 #ifdef SNMP_PP_NAMESPACE
@@ -75,11 +73,7 @@ const char *Counter64::get_printable() const
 
   char *buf = PP_CONST_CAST(char*, output_buffer);
   if ( high() != 0 )
-#ifdef HAVE_INTTYPES_H
     sprintf(buf, "%" PRIu64, (uint64_t) high()<<32|low());
-#else
-    sprintf(buf, "0x%lX%08lX", high(), low());
-#endif
   else
     sprintf(buf, "%lu", low());
 

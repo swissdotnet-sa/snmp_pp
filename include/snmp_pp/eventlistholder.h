@@ -45,7 +45,7 @@ class Pdu;
 class v3MP;
 class Snmp;
 
-class DLLOPT EventListHolder
+class EventListHolder
 {
  public:
   EventListHolder(Snmp *snmp_session);

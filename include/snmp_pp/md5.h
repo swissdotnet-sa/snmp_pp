@@ -81,9 +81,9 @@ typedef struct {
   unsigned char buffer[64];                                 /* input buffer */
 } MD5_CTX;
 
-DLLOPT void  MD5Init(MD5_CTX *);
-DLLOPT void  MD5Update(MD5_CTX *, const unsigned char *, const unsigned int);
-DLLOPT void  MD5Final(unsigned char [16], MD5_CTX *);
+void  MD5Init(MD5_CTX *);
+void  MD5Update(MD5_CTX *, const unsigned char *, const unsigned int);
+void  MD5Final(unsigned char [16], MD5_CTX *);
 
 #ifdef SNMP_PP_NAMESPACE
 } // end of namespace Snmp_pp
