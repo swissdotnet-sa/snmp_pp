@@ -78,3 +78,12 @@ target_link_libraries(test_app
     PUBLIC
         snmp++::snmp++
 )
+
+set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
+find_package(boost 1.69 EXACT)
+add_executable(receive_trap_asio receive_trap_asio.cpp)
+target_link_libraries(receive_trap_asio
+    PUBLIC
+        snmp++::snmp++
+        boost::boost
+)

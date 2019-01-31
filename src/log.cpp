@@ -94,7 +94,7 @@ void LogEntry::init(void)
 	add_timestamp();
 	add_string(": ");
 
-        pthread_t pid = pthread_self();
+    pthread_t pid = pthread_self();
 	if (sizeof(pthread_t) == sizeof(long))
 	{
 	  add_integer(*(long*)(void*)(&pid));
@@ -106,7 +106,6 @@ void LogEntry::init(void)
 	  os.set_data(ptc, sizeof(pthread_t));
 	  add_string(os.get_printable_hex());
 	}
-#endif
 
 	add_string(": ");
 
