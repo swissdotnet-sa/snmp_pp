@@ -494,7 +494,7 @@ int SnmpMessage::load(const Pdu &cpdu,
 }
 
 // load up a SnmpMessage
-int SnmpMessage::load( unsigned char *data,
+int SnmpMessage::load(const unsigned char *data,
                        unsigned long len)
 {
   bufflen = MAX_SNMP_PACKET;

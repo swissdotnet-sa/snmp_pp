@@ -1,5 +1,6 @@
 [requires]
 boost/1.69.0@conan/stable
+doctest/2.0.1@bincrafters/stable
 
 [generators]
 cmake_find_package

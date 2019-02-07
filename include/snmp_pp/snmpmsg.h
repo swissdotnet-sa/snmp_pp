@@ -99,7 +99,7 @@ class SnmpMessage
 
 	// load up message using ASN.1 data stream
 	// status is returned
-	int load( unsigned char *data,         // data to be loaded
+	int load(const unsigned char *data,         // data to be loaded
 		  unsigned long len);	       // len of data to be loaded
 
 	// unload ( unserialize ) into SNMP++ Pdu, community and version
