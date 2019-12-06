@@ -33,13 +33,13 @@
 
 // define _NO_LOGGING if you do not want any logging output 
 // (increases performance drastically and minimizes memory consumption)
-#if 1
+#if 0
 #undef _NO_LOGGING
 #else
 #define _NO_LOGGING
 #endif
 
-#if 1
+#if 0
 #ifndef WITHOUT_LOG_PROFILES
 #define WITH_LOG_PROFILES 1
 #endif
